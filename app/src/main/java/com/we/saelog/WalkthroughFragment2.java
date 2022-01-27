@@ -1,6 +1,5 @@
 package com.we.saelog;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,15 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyPageFragment#newInstance} factory method to
+ * Use the {@link WalkthroughFragment2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyPageFragment extends Fragment implements View.OnClickListener {
+public class WalkthroughFragment2 extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +24,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    public MyPageFragment() {
+    public WalkthroughFragment2() {
         // Required empty public constructor
     }
 
@@ -37,11 +34,11 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MypageFragment.
+     * @return A new instance of fragment WalkthroughFragment2.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyPageFragment newInstance(String param1, String param2) {
-        MyPageFragment fragment = new MyPageFragment();
+    public static WalkthroughFragment2 newInstance(String param1, String param2) {
+        WalkthroughFragment2 fragment = new WalkthroughFragment2();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,24 +59,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // View에 inflate
-        View v = inflater.inflate(R.layout.fragment_my_page, container, false);
-
-        ImageButton btnNewCategory = (ImageButton) v.findViewById(R.id.btnNewCategory);
-        btnNewCategory.setOnClickListener(this);
-
-        return v;
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent;
-        switch (view.getId()){
-            // + 버튼을 눌렀을 때 새로운 카테고리를 생성하기 위한 Activity 실행
-            case R.id.btnNewCategory:
-                intent = new Intent(getActivity(), NewCategoryActivity.class);
-                startActivity(intent);
-                break;
-        }
+        return inflater.inflate(R.layout.fragment_walkthrough2, container, false);
     }
 }
