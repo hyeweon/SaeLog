@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"
-        android:textColor="@color/white"
+        android:textColor="@color/gray6"
         android:textSize="20sp"
         android:text="주제에 맞는 다양한 템플릿을\n선택하여 아카이빙하기" />
 </LinearLayout>

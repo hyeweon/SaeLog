@@ -1,14 +1,12 @@
 package com.we.saelog;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 
 public class IntroActivity extends AppCompatActivity {
 
@@ -18,18 +16,21 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        prefs = getSharedPreferences("Pref12", MODE_PRIVATE);
+
+        prefs = getSharedPreferences("Pref", MODE_PRIVATE);
         checkFirstRun();
     }
 
     public void checkFirstRun() {
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+        // 첫 실행일 경우 워크스루 보여주기
         if (isFirstRun) {
-            getSupportFragmentManager().beginTransaction().add(R.id.pager,new WalkthroughFragment1()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.frame,new WalkthroughFragment1()).commit();
             findViewById(R.id.logo).setVisibility(View.GONE);
             findViewById(R.id.btnStart).setVisibility(View.VISIBLE);
             prefs.edit().putBoolean("isFirstRun", false).apply();
         }
+        // 실행 후 1초 뒤에 Main Activity로 전환
         else {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
@@ -39,10 +40,11 @@ public class IntroActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-            },1000); // 1초 후
+            },1000);
         }
     }
 
+    // 시작하기 버튼을 누르면 바로 Main Activity 실행
     public void mOnClick(View v){
         Intent intent = new Intent (getApplicationContext(), MainActivity.class);
         startActivity(intent);

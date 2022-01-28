@@ -19,15 +19,15 @@ public class MyCategory {
     @ColumnInfo(name="category_thumbnail")
     private Bitmap thumbnail;
 
-    // 뷰 형식 (0 ~ 5)
-    @ColumnInfo(name="category_type")
-    private int type;
-
     // 테마 색상 (0 ~ 7)
     @ColumnInfo(name="category_color")
     private int color;
 
-    // 카테고리 별 컨텐츠 개수
+    // 뷰 형식 (0 ~ 5)
+    @ColumnInfo(name="category_type")
+    private int type;
+
+    // 컨텐츠 개수
     @ColumnInfo(name="category_contents_num")
     private int contentsNum;
 
@@ -96,10 +96,10 @@ public class MyCategory {
     private int content8Type;
 
     // 생성자
-    public MyCategory(String title, int type, int color, int contentsNum) {
+    public MyCategory(String title, int color, int type, int contentsNum) {
         this.title = title;
-        this.type = type;
         this.color = color;
+        this.type = type;
         this.contentsNum = contentsNum;
     }
 
