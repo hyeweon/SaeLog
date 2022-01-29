@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +55,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
+    CategoryDB db;
+    MyPageRecyclerAdapter mRecyclerAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +65,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // DB 호출
+        db = CategoryDB.getAppDatabase(getActivity());
     }
 
     @Override
@@ -67,6 +79,28 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 
         ImageButton btnNewCategory = (ImageButton) v.findViewById(R.id.btnNewCategory);
         btnNewCategory.setOnClickListener(this);
+
+        // Adapter 초기화
+        mRecyclerAdapter = new MyPageRecyclerAdapter();
+
+        // 임시 객체로 RecyclerView 설정
+        MyCategory initCategory = new MyCategory("", 0, 0, 0);
+        List<MyCategory> intiData = new ArrayList<>();
+        intiData.add(initCategory);
+        mRecyclerAdapter.setMyCategoryArrayList(intiData);
+
+        // RecyclerView 초기화
+        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));     // Grid Layout 사용
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+
+        // LiveData observe
+        db.categoryDAO().getAll().observe(getActivity(), new Observer<List<MyCategory>>() {
+            @Override
+            public void onChanged(List<MyCategory> myCategoryList) {
+                mRecyclerAdapter.setMyCategoryArrayList(myCategoryList);   // 티켓 목록에 반영
+            }
+        });
 
         return v;
     }

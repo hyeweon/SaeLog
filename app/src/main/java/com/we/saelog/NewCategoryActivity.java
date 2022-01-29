@@ -3,22 +3,32 @@ package com.we.saelog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewCategoryActivity extends AppCompatActivity {
 
+    CategoryDB db;
+
     int contentNum;
     Button btnContentAdd;
+
+    private EditText mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // DB 호출
+        db = CategoryDB.getAppDatabase(this);
+
         contentNum = 1;
         setContentView(R.layout.activity_new_category);
 
@@ -34,6 +44,9 @@ public class NewCategoryActivity extends AppCompatActivity {
         spinner1.setAdapter(contentTypeAdapter);
         spinner2.setAdapter(contentTypeAdapter);
         spinner3.setAdapter(contentTypeAdapter);
+
+        mTitle = findViewById(R.id.title);
+        Button btnSave = (Button) findViewById(R.id.btnSave);
     }
 
     public void mOnClick(View v){
@@ -52,35 +65,29 @@ public class NewCategoryActivity extends AppCompatActivity {
         }
     }
 
-/*
-    public void mOnClick(View v){
-        switch (v.getId()){
-            case R.id.btnSave:
-                if(mTicketTitle.getText().toString().trim().length() <= 0) {    // 카테고리명이 입력되지 않은 경우
-                    Toast.makeText(NewCategoryActivity.this, "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }else{
-                    // DB에 새로운 티켓 추가를 위한 AsyncTask 호출
-                    new InsertAsyncTask(db.ticketDAO())
-                            .execute(new MyTickets(mTicketTitle.getText().toString(),date,time,mTicketSeat.getText().toString(),mTicketCast.getText().toString(),mTicketReview.getText().toString()));
-                    onBackPressed();                                                // 이전 화면으로
-                }
-                break;
+    public void saveOnClick(View v){
+        if(mTitle.getText().toString().trim().length() <= 0) {        // 제목이 입력되지 않은 경우
+            Toast.makeText(this, "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }else{
+            // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
+            new InsertAsyncTask(db.categoryDAO())
+                    .execute(new MyCategory(mTitle.getText().toString(), 0, 0, 0));
+            mTitle.setText(null);
         }
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
-    public static class InsertAsyncTask extends AsyncTask<MyTickets, Void, Void> {
-        private TicketDAO ticketDAO;
+    public static class InsertAsyncTask extends AsyncTask<MyCategory, Void, Void> {
+        private CategoryDAO categoryDAO;
 
-        public  InsertAsyncTask(TicketDAO ticketDAO){
-            this.ticketDAO = ticketDAO;
+        public  InsertAsyncTask(CategoryDAO categoryDAO){
+            this.categoryDAO = categoryDAO;
         }
 
         @Override
-        protected Void doInBackground(MyTickets... myTickets) {
-            ticketDAO.insert(myTickets[0]); // DB에 새로운 티켓 추가
+        protected Void doInBackground(MyCategory... myCategory) {
+            categoryDAO.insert(myCategory[0]); // DB에 새로운 티켓 추가
             return null;
         }
     }
- */
 }

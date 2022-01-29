@@ -49,5 +49,11 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             style="@style/Widget.AppCompat.RatingBar.Indicator" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="save"/>
     </LinearLayout>
 </FrameLayout>

@@ -62,9 +62,104 @@
             android:id="@+id/theme"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-            <RadioButton
-                android:layout_width="100dp"
-                android:layout_height="30dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="18.83dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10.35dp">
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/coral"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/indigo"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="18.83dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10.35dp">
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/yellow"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/purple"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="18.83dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10.35dp">
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/green"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/pink"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="18.83dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/blue"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+                <ImageView
+                    android:layout_width="18.83dp"
+                    android:layout_height="18.83dp"
+                    android:background="@color/gray"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
         </RadioGroup>
     </LinearLayout>
 
@@ -230,10 +325,20 @@
     <Button
         android:id="@+id/btnContentAdd"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_gravity="center"
         android:layout_margin="35dp"
+        android:textStyle="bold"
         android:textSize="15sp"
         android:text="항목 추가 (1/8)"
+        android:drawableLeft="@drawable/icon_add"
+        android:drawableTint="@color/white"
         android:onClick="mOnClick"/>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        android:onClick="saveOnClick"/>
 </LinearLayout>

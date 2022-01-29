@@ -3,10 +3,16 @@ package com.we.saelog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +52,9 @@ public class TimelineFragment extends Fragment {
         return fragment;
     }
 
+    PostDB db;
+    TimelineRecyclerAdapter mRecyclerAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +62,40 @@ public class TimelineFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // DB 호출
+        db = PostDB.getAppDatabase(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+        // view에 inflate
+        View v = inflater.inflate(R.layout.fragment_timeline, container, false);
+
+        // Adapter 초기화
+        mRecyclerAdapter = new TimelineRecyclerAdapter();
+
+        // 임시 객체로 RecyclerView 설정
+        MyPost initPost = new MyPost(0, " ");
+        List<MyPost> intiData = new ArrayList<>();
+        intiData.add(initPost);
+        mRecyclerAdapter.setMyPostArrayList(intiData);
+
+        // RecyclerView 초기화
+        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));     // Linear Layout 사용
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+
+        // LiveData observe
+        db.postDAO().getAll().observe(getActivity(), new Observer<List<MyPost>>() {
+            @Override
+            public void onChanged(List<MyPost> myTicketsList) {
+                mRecyclerAdapter.setMyPostArrayList(myTicketsList);   // 티켓 목록에 반영
+            }
+        });
+
+        return v;
     }
 }

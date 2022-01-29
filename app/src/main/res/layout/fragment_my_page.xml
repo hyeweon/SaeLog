@@ -99,6 +99,7 @@
                     android:src="@drawable/icon_add" />
             </LinearLayout>
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -106,10 +107,11 @@
                 android:textSize="20dp"
                 android:text="카테고리를 만들어주세요."/>
 
-            <GridLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            </GridLayout>
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
