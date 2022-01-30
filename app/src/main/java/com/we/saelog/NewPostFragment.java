@@ -3,14 +3,24 @@ package com.we.saelog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.we.saelog.room.MyPost;
+import com.we.saelog.room.PostDAO;
+import com.we.saelog.room.PostDB;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +60,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
+    androidx.appcompat.widget.Toolbar toolbar;
     private EditText mTitle;
 
     PostDB db;
@@ -74,16 +85,41 @@ public class NewPostFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_new_post, container, false);
 
         mTitle = v.findViewById(R.id.title);
-        Button btnSave = (Button) v.findViewById(R.id.btnSave);
+        Button btnSave = (Button) v.findViewById(R.id.btnSave1);
         btnSave.setOnClickListener(this);
+        toolbar = v.findViewById(R.id.toolbar);
 
         return v;
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.new_post_toolbar_items,menu);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.btnSave:
+                        Toast.makeText(getActivity(),"등록 버튼 클릭",Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btnSave:
+            case R.id.btnSave1:
                 if(mTitle.getText().toString().trim().length() <= 0) {        // 제목이 입력되지 않은 경우
                     Toast.makeText(getActivity(), "공연명을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{

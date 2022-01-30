@@ -1,5 +1,6 @@
 package com.we.saelog;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.we.saelog.room.MyPost;
+import com.we.saelog.room.PostDAO;
+import com.we.saelog.room.PostDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,5 +102,20 @@ public class TimelineFragment extends Fragment {
         });
 
         return v;
+    }
+
+    // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
+    public static class UpdateAsyncTask extends AsyncTask<MyPost, Void, Void> {
+        private final PostDAO postDAO;
+
+        public  UpdateAsyncTask(PostDAO postDAO){
+            this.postDAO = postDAO;
+        }
+
+        @Override
+        protected Void doInBackground(MyPost... myPost) {
+            postDAO.update(myPost[0]); // DB에 새로운 포스트 추가
+            return null;
+        }
     }
 }

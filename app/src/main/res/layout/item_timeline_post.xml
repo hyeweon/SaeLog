@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="150dp"
+    android:layout_marginBottom="5dp"
     android:background="#ECECEC">
     <ImageView
         android:id="@+id/thumbnail"
@@ -22,7 +23,7 @@
             android:layout_marginTop="11dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="포스트명"/>
     </LinearLayout>
     <LinearLayout
@@ -44,10 +45,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
-        <ImageView
+        <ImageButton
+            android:id="@+id/btnHeart"
             android:layout_width="wrap_content"
             android:layout_height="20.16dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/icon_heart"/>
+            android:background="@null"
+            android:scaleType="fitEnd" />
     </LinearLayout>
 </LinearLayout>
