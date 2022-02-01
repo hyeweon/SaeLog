@@ -41,7 +41,7 @@ public class MyPageRecyclerAdapter extends RecyclerView.Adapter<MyPageRecyclerAd
         return myCategoryArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
 
         public ViewHolder(@NonNull View itemView) {

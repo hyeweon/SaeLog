@@ -1,7 +1,9 @@
 package com.we.saelog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.we.saelog.room.CategoryDAO;
 import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
 
+import java.util.ArrayList;
+
 public class NewCategoryActivity extends AppCompatActivity {
 
     CategoryDB db;
@@ -23,6 +27,8 @@ public class NewCategoryActivity extends AppCompatActivity {
     Button btnContentAdd;
 
     private EditText mTitle;
+
+    ViewPager2 viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,18 @@ public class NewCategoryActivity extends AppCompatActivity {
 
         contentNum = 1;
         setContentView(R.layout.activity_new_category);
+
+
+        viewPager = findViewById(R.id.viewPager);
+
+        ArrayList<Drawable> drawableArrayList = new ArrayList<>();
+        drawableArrayList.add(getResources().getDrawable(R.drawable.icon_fullheart));
+        drawableArrayList.add(getResources().getDrawable(R.drawable.icon_heart));
+        drawableArrayList.add(getResources().getDrawable(R.drawable.icon_fullheart));
+
+        viewPager.setAdapter(new NewCategoryTypeAdapter(drawableArrayList));
+
+
 
         Spinner spinner1 = (Spinner)findViewById(R.id.spinner1);
         Spinner spinner2 = (Spinner)findViewById(R.id.spinner2);

@@ -121,7 +121,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.btnSave1:
                 if(mTitle.getText().toString().trim().length() <= 0) {        // 제목이 입력되지 않은 경우
-                    Toast.makeText(getActivity(), "공연명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
                     // DB에 새로운 포스트 추가를 위한 AsyncTask 호출
                     new InsertAsyncTask(db.postDAO())

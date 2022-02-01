@@ -62,6 +62,7 @@ public class MyPost {
     public MyPost(int category, String title) {
         this.category = category;
         this.title = title;
+        this.isHearted = false;
     }
 
     // 각 Attribute에 접근할 때 사용하는 함수
