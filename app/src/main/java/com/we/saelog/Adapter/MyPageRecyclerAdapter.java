@@ -1,4 +1,4 @@
-package com.we.saelog;
+package com.we.saelog.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.we.saelog.R;
 import com.we.saelog.room.MyCategory;
 
 import java.util.ArrayList;

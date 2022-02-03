@@ -26,6 +26,10 @@ public class MyPost {
     @ColumnInfo(name="post_title")
     private String title;
 
+    // 대표 이미지
+    @ColumnInfo(name="post_thumbnail")
+    private String thumbnail;
+
     // 첫번째 컨텐츠
     @ColumnInfo(name="post_content1")
     public String content1;
@@ -81,6 +85,9 @@ public class MyPost {
     public String getTitle() {
         return title;
     }
+    public String getThumbnail() {
+        return thumbnail;
+    }
 
     public void setPostID(int postID) {
         this.postID = postID;
@@ -96,6 +103,9 @@ public class MyPost {
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getContent(int n){

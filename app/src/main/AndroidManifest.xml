@@ -10,11 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaeLog">
         <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".intro.WalkthroughActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SettingActivity"
+            android:exported="true" />
+        <activity
             android:name=".PostDetailsActivity"
             android:exported="true"
             android:theme="@style/Transparent" />
         <activity
-            android:name=".IntroActivity"
+            android:name=".intro.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +36,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

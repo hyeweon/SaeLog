@@ -1,18 +1,24 @@
 package com.we.saelog;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-
+import com.we.saelog.Adapter.MyPageRecyclerAdapter;
 import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
 
@@ -34,6 +40,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    public CategoryDB db;
+    public SharedPreferences prefs;
+    public MyPageRecyclerAdapter mRecyclerAdapter;
 
     public MyPageFragment() {
         // Required empty public constructor
@@ -57,9 +67,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    CategoryDB db;
-    MyPageRecyclerAdapter mRecyclerAdapter;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +77,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 
         // DB 호출
         db = CategoryDB.getAppDatabase(getActivity());
+
+        prefs = getActivity().getSharedPreferences("Pref", getActivity().MODE_PRIVATE);
     }
 
     @Override
@@ -81,6 +90,24 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 
         ImageButton btnNewCategory = (ImageButton) v.findViewById(R.id.btnNewCategory);
         btnNewCategory.setOnClickListener(this);
+        ImageButton btnSetting = (ImageButton) v.findViewById(R.id.btnSetting);
+        btnSetting.setOnClickListener(this);
+
+        // 이름
+        String name = prefs.getString("name", "");
+        TextView mName = (TextView) v.findViewById(R.id.name);
+        mName.setText(name);
+
+        // 자기소개
+        String bio = prefs.getString("bio", "");
+        TextView mBio = (TextView) v.findViewById(R.id.bio);
+        mBio.setText(bio);
+
+        // 프로필 이미지
+        ImageView profileImage = (ImageView) v.findViewById(R.id.profileImage);
+        String strProfileImage = prefs.getString("profileImage", "");
+        Bitmap bitmapProfileImage = StringToBitmap(strProfileImage);
+        profileImage.setImageBitmap(bitmapProfileImage);
 
         // Adapter 초기화
         mRecyclerAdapter = new MyPageRecyclerAdapter();
@@ -116,6 +143,23 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getActivity(), NewCategoryActivity.class);
                 startActivity(intent);
                 break;
+            // 설정 아이콘을 눌렀을 때 새로운 카테고리를 생성하기 위한 Activity 실행
+            case R.id.btnSetting:
+                intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    // from https://stickode.com/detail.html?no=1297
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);// String 화 된 이미지를  base64방식으로 인코딩하여 byte배열을 만듬
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);//byte배열을 bitmapfactory 메소드를 이용하여 비트맵으로 바꿔준다.
+            return bitmap;//만들어진 bitmap을 return
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
         }
     }
 }

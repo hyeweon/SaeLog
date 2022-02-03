@@ -6,7 +6,7 @@
     android:layout_marginTop="182dp"
     android:layout_marginLeft="44.24dp"
     android:orientation="vertical"
-    tools:context=".WalkthroughFragment2">
+    tools:context=".intro.WalkthroughFragment2">
 
     <TextView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"
-        android:textColor="@color/gray6"
+        android:textColor="@color/gray5"
         android:textSize="20sp"
         android:text="주제에 맞는 다양한 템플릿을\n선택하여 아카이빙하기" />
 </LinearLayout>

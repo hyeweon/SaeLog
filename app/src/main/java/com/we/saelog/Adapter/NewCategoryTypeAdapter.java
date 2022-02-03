@@ -1,4 +1,4 @@
-package com.we.saelog;
+package com.we.saelog.Adapter;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -9,13 +9,15 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.we.saelog.R;
+
 import java.util.ArrayList;
 
 public class NewCategoryTypeAdapter extends RecyclerView.Adapter<NewCategoryTypeAdapter.ViewHolder> {
     private ArrayList<Drawable> categoryTypeArrayList;
 
-    NewCategoryTypeAdapter(ArrayList<Drawable> data) {
-        this.categoryTypeArrayList = data;
+    public NewCategoryTypeAdapter(ArrayList<Drawable> categoryTypeArrayList) {
+        this.categoryTypeArrayList = categoryTypeArrayList;
     }
 
     @NonNull
@@ -40,7 +42,6 @@ public class NewCategoryTypeAdapter extends RecyclerView.Adapter<NewCategoryType
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // 포스트를 보여줄 TextView를 id로 불러오기
             preview = (ImageView) itemView.findViewById(R.id.preview);
         }
 

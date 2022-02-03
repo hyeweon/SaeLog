@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             app:menu="@menu/new_post_toolbar_items">
-
         </androidx.appcompat.widget.Toolbar>
 
         <EditText

@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#E13232</color>
 
     <color name="saelog_green">#4C947D</color>
     <color name="saelog_lightgreen">#8DC4A1</color>
@@ -16,7 +17,6 @@
     <color name="gray3">#949494</color>
     <color name="gray4">#6A6A6A</color>
     <color name="gray5">#ADADAD</color>
-    <color name="gray6">#EFEFEF</color>
 
     <color name="coral">#E16B6B</color>
     <color name="yellow">#FFB300</color>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient"
+    tools:context=".intro.WalkthroughActivity">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <android.widget.Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_start"
+        android:textColor="@color/saelog_green"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="시작하기"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="115dp">
+        <View
+            android:layout_width="95dp"
+            android:layout_height="1dp"
+            android:layout_marginVertical="57dp"
+            android:layout_gravity="center"
+            android:background="@color/white"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_marginVertical="50dp"
+            android:layout_marginHorizontal="125dp"
+            android:background="@null"
+            app:tabBackground="@drawable/indicator_selector"
+            app:tabIndicator="@null">
+        </com.google.android.material.tabs.TabLayout>
+    </FrameLayout>
+</LinearLayout>

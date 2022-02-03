@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.we.saelog.Adapter.TimelineRecyclerAdapter;
 import com.we.saelog.room.MyPost;
 import com.we.saelog.room.PostDAO;
 import com.we.saelog.room.PostDB;

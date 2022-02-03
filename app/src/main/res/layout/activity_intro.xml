@@ -5,64 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/gradient"
-    tools:context=".IntroActivity">
-    <LinearLayout
-        android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="134.87dp"
-                android:layout_height="111.29dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/logo1"/>
-            <ImageView
-                android:layout_width="134.87dp"
-                android:layout_height="111.29dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="7dp"
-                android:alpha="0.5"
-                android:scaleType="centerInside"
-                android:src="@drawable/logo2"/>
-        </FrameLayout>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
+    tools:context=".intro.IntroActivity">
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
     <FrameLayout
-        android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:id="@+id/btnStart"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="115dp"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/saelog_green"
-            android:textSize="22sp"
-            android:onClick="mOnClick"
-            android:text="시작하기"/>
-    </LinearLayout>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/logo1"/>
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:scaleType="centerInside"
+            android:alpha="0.5"
+            android:src="@drawable/logo2"/>
+    </FrameLayout>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 </LinearLayout>

@@ -1,11 +1,8 @@
 package com.we.saelog.room;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.ColumnInfo;
-import android.graphics.Bitmap;
-
-import java.io.ByteArrayOutputStream;
 
 @Entity
 public class MyCategory {
@@ -19,7 +16,7 @@ public class MyCategory {
 
     // 대표 이미지
     @ColumnInfo(name="category_thumbnail")
-    private int thumbnail;
+    private String thumbnail;
 
     // 테마 색상 (0 ~ 7)
     @ColumnInfo(name="category_color")
@@ -112,7 +109,7 @@ public class MyCategory {
     public String getTitle() {
         return title;
     }
-    public int getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
     public int getColor() {
@@ -179,7 +176,7 @@ public class MyCategory {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setThumbnail(int thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
     public void setColor(int color) {
