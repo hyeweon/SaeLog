@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,7 +31,7 @@ import com.we.saelog.room.MyCategory;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NewCategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class NewCategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener {
 
     CategoryDB db;
 
@@ -119,15 +120,20 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         Spinner spinner2 = (Spinner)findViewById(R.id.spinner2);
         Spinner spinner3 = (Spinner)findViewById(R.id.spinner3);
         Spinner spinner4 = (Spinner)findViewById(R.id.spinner4);
-        Spinner spinner5 = (Spinner)findViewById(R.id.spinner1);
-        Spinner spinner6 = (Spinner)findViewById(R.id.spinner1);
-        Spinner spinner7 = (Spinner)findViewById(R.id.spinner1);
-        Spinner spinner8 = (Spinner)findViewById(R.id.spinner1);
+        Spinner spinner5 = (Spinner)findViewById(R.id.spinner5);
+        Spinner spinner6 = (Spinner)findViewById(R.id.spinner6);
+        Spinner spinner7 = (Spinner)findViewById(R.id.spinner7);
+        Spinner spinner8 = (Spinner)findViewById(R.id.spinner8);
         ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(this, R.array.content_types, R.layout.item_content_type);
         spinner1.setAdapter(contentTypeAdapter);
         spinner2.setAdapter(contentTypeAdapter);
         spinner3.setAdapter(contentTypeAdapter);
         spinner4.setAdapter(contentTypeAdapter);
+        spinner5.setAdapter(contentTypeAdapter);
+        spinner6.setAdapter(contentTypeAdapter);
+        spinner7.setAdapter(contentTypeAdapter);
+        spinner8.setAdapter(contentTypeAdapter);
+        spinner1.setOnItemClickListener(this);
         btnContentAdd = (Button) findViewById(R.id.btnContentAdd);
 
         Button btnSave = (Button) findViewById(R.id.btnSave1);
@@ -150,16 +156,16 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
                     findViewById(R.id.content4).setVisibility(View.VISIBLE);
                     break;
                 case 4:
-                    findViewById(R.id.content4).setVisibility(View.VISIBLE);
+                    findViewById(R.id.content5).setVisibility(View.VISIBLE);
                     break;
                 case 5:
-                    findViewById(R.id.content4).setVisibility(View.VISIBLE);
+                    findViewById(R.id.content6).setVisibility(View.VISIBLE);
                     break;
                 case 6:
-                    findViewById(R.id.content4).setVisibility(View.VISIBLE);
+                    findViewById(R.id.content7).setVisibility(View.VISIBLE);
                     break;
                 case 7:
-                    findViewById(R.id.content4).setVisibility(View.VISIBLE);
+                    findViewById(R.id.content8).setVisibility(View.VISIBLE);
                     break;
             }
             contentNum++;
@@ -216,6 +222,11 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
             }
             mCardView.setCardBackgroundColor(getColor(color));
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tvItemSpinner"
     android:layout_width="match_parent"
-    android:layout_height="25dp"
+    android:layout_height="match_parent"
     android:gravity="center"
+    app:drawableRightCompat="@drawable/icon_arrowdown_resize"
+    android:background="@drawable/spinner_content_type"
     android:textColor="@android:color/white"
     android:textSize="12sp" />

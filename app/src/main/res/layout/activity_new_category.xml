@@ -326,13 +326,13 @@
                     android:layout_height="26dp"
                     android:layout_gravity="end"
                     android:layout_marginRight="14dp"
-                    android:background="@drawable/spinner_content_type"
+                    android:background="@null"
                     android:gravity="center"
                     />
                 <ImageButton
                     android:layout_width="17dp"
                     android:layout_height="19dp"
-                    android:layout_gravity="end"
+                    android:layout_gravity="end|center_vertical"
                     android:scaleType="centerInside"
                     android:background="@null"
                     android:src="@drawable/icon_delete"/>
@@ -372,11 +372,12 @@
                     android:layout_height="26dp"
                     android:layout_gravity="end"
                     android:layout_marginRight="14dp"
-                    android:gravity="center"/>
+                    android:background="@null"
+                    android:gravity="center" />
                 <ImageButton
                     android:layout_width="17dp"
                     android:layout_height="19dp"
-                    android:layout_gravity="end"
+                    android:layout_gravity="end|center_vertical"
                     android:scaleType="centerInside"
                     android:background="@null"
                     android:src="@drawable/icon_delete"/>
@@ -416,11 +417,12 @@
                     android:layout_height="26dp"
                     android:layout_gravity="end"
                     android:layout_marginRight="14dp"
+                    android:background="@null"
                     android:gravity="center"/>
                 <ImageButton
                     android:layout_width="17dp"
                     android:layout_height="19dp"
-                    android:layout_gravity="end"
+                    android:layout_gravity="end|center_vertical"
                     android:scaleType="centerInside"
                     android:background="@null"
                     android:src="@drawable/icon_delete"/>
@@ -460,11 +462,192 @@
                     android:layout_height="26dp"
                     android:layout_gravity="end"
                     android:layout_marginRight="14dp"
+                    android:background="@null"
                     android:gravity="center"/>
                 <ImageButton
                     android:layout_width="17dp"
                     android:layout_height="19dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/icon_delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/content5"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray4"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="5. " />
+                <EditText
+                    android:id="@+id/content5Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/gray2"
+                    android:textColor="@color/gray4"
+                    android:textSize="15sp"
+                    android:background="@null"
+                    android:hint="항목을 입력해주세요" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <Spinner
+                    android:id="@+id/spinner5"
+                    android:layout_width="129dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="end"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="center" />
+                <ImageButton
+                    android:layout_width="17dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/icon_delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/content6"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray4"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="6. " />
+                <EditText
+                    android:id="@+id/content6Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/gray2"
+                    android:textColor="@color/gray4"
+                    android:textSize="15sp"
+                    android:background="@null"
+                    android:hint="항목을 입력해주세요" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <Spinner
+                    android:id="@+id/spinner6"
+                    android:layout_width="129dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="center" />
+                <ImageButton
+                    android:layout_width="17dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/icon_delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/content7"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray4"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="7. " />
+                <EditText
+                    android:id="@+id/content7Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/gray2"
+                    android:textColor="@color/gray4"
+                    android:textSize="15sp"
+                    android:background="@null"
+                    android:hint="항목을 입력해주세요" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <Spinner
+                    android:id="@+id/spinner7"
+                    android:layout_width="129dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="center" />
+                <ImageButton
+                    android:layout_width="17dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/icon_delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/content8"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray4"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="2. " />
+                <EditText
+                    android:id="@+id/content8Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/gray2"
+                    android:textColor="@color/gray4"
+                    android:textSize="15sp"
+                    android:background="@null"
+                    android:hint="항목을 입력해주세요" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <Spinner
+                    android:id="@+id/spinner8"
+                    android:layout_width="129dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="center" />
+                <ImageButton
+                    android:layout_width="17dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="end|center_vertical"
                     android:scaleType="centerInside"
                     android:background="@null"
                     android:src="@drawable/icon_delete"/>
@@ -476,11 +659,11 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:layout_margin="35dp"
+                android:drawableLeft="@drawable/icon_add"
+                android:background="@drawable/btn_content_add"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:text="항목 추가 (1/8)"
-                android:drawableLeft="@drawable/icon_add"
-                android:drawableTint="@color/white"
+                android:text="항목 추가하기 (1/8)"
                 android:onClick="mOnClick"/>
 
             <Button

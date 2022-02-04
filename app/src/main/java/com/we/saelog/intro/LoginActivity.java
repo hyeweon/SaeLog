@@ -1,4 +1,4 @@
-package com.we.saelog;
+package com.we.saelog.intro;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +11,8 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.we.saelog.intro.WalkthroughActivity;
+import com.we.saelog.MainActivity;
+import com.we.saelog.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

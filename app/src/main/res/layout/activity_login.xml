@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/gradient"
     android:padding="37dp"
-    tools:context=".LoginActivity">
+    tools:context=".intro.LoginActivity">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
