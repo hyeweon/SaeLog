@@ -1,9 +1,11 @@
 package com.we.saelog;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,12 +38,16 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
     CategoryDB db;
 
+    public Intent intent;
     String theme;
     int contentNum;
+
+    private static final int GET_IMAGE_FOR_ThumbNail = 100;
 
     public Toolbar mToolbar;
     public EditText mTitle;
     public CardView mCardView;
+    public ImageView mThumbnail;
     public ArrayList<CheckBox> mTheme;
     public ViewPager2 mViewPager;
     public TabLayout mIndicator;
@@ -76,6 +83,9 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
                 mTitle.setTypeface(Typeface.DEFAULT_BOLD);
             }
         });
+
+        mThumbnail = findViewById(R.id.thumbnail);
+        mThumbnail.setOnClickListener(click);
 
         // Theme
         CheckBox mCoral = (CheckBox)findViewById(R.id.coral);
@@ -184,6 +194,23 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         }
     }
 
+    // Thumbnail
+    final View.OnClickListener click = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.thumbnail:
+                    intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, GET_IMAGE_FOR_ThumbNail);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     // Theme
     public void onCheckedChanged(CompoundButton view, boolean b) {
         int color;
@@ -226,7 +253,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        
+
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
