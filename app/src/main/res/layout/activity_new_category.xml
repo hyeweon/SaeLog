@@ -12,18 +12,9 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:elevation="6dp"
-        app:menu="@menu/new_category_toolbar_items">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="카테고리"/>
-    </androidx.appcompat.widget.Toolbar>
+        app:menu="@menu/new_category_toolbar_items"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -90,8 +81,9 @@
                                 android:layout_width="95dp"
                                 android:layout_height="95dp"
                                 android:layout_gravity="center"
+                                android:background="@color/white"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/test_image"/>
+                                android:src="@drawable/icon_add_photo_resize"/>
                         </com.google.android.material.card.MaterialCardView>
                     </com.google.android.material.card.MaterialCardView>
                     <TextView
@@ -292,6 +284,14 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:text="항목 만들기"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/contentRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
             <LinearLayout
                 android:id="@+id/content1"
                 android:layout_width="match_parent"
@@ -337,329 +337,13 @@
                     android:background="@null"
                     android:src="@drawable/icon_delete"/>
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content2"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="2. " />
-                <EditText
-                    android:id="@+id/content2Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner2"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center" />
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content3"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="3. " />
-                <EditText
-                    android:id="@+id/content3Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner3"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center"/>
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content4"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="4. " />
-                <EditText
-                    android:id="@+id/content4Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner4"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center"/>
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content5"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="5. " />
-                <EditText
-                    android:id="@+id/content5Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner5"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center" />
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content6"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="6. " />
-                <EditText
-                    android:id="@+id/content6Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner6"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center" />
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content7"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="7. " />
-                <EditText
-                    android:id="@+id/content7Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner7"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center" />
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/content8"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="2. " />
-                <EditText
-                    android:id="@+id/content8Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner8"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center" />
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
-
             <Button
                 android:id="@+id/btnContentAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:layout_margin="35dp"
-                android:drawableLeft="@drawable/icon_add"
+                android:drawableLeft="@drawable/icon_plus"
                 android:background="@drawable/btn_content_add"
                 android:textStyle="bold"
                 android:textSize="15sp"
@@ -673,5 +357,5 @@
                 android:text="save"
                 android:onClick="saveOnClick"/>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

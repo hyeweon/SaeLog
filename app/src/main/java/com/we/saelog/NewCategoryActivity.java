@@ -39,7 +39,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     CategoryDB db;
 
     public Intent intent;
-    String theme;
+    int theme;
     int contentNum;
 
     private static final int GET_IMAGE_FOR_ThumbNail = 100;
@@ -127,22 +127,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         // Content Spinner
         contentNum = 1;
         Spinner spinner1 = (Spinner)findViewById(R.id.spinner1);
-        Spinner spinner2 = (Spinner)findViewById(R.id.spinner2);
-        Spinner spinner3 = (Spinner)findViewById(R.id.spinner3);
-        Spinner spinner4 = (Spinner)findViewById(R.id.spinner4);
-        Spinner spinner5 = (Spinner)findViewById(R.id.spinner5);
-        Spinner spinner6 = (Spinner)findViewById(R.id.spinner6);
-        Spinner spinner7 = (Spinner)findViewById(R.id.spinner7);
-        Spinner spinner8 = (Spinner)findViewById(R.id.spinner8);
         ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(this, R.array.content_types, R.layout.item_content_type);
         spinner1.setAdapter(contentTypeAdapter);
-        spinner2.setAdapter(contentTypeAdapter);
-        spinner3.setAdapter(contentTypeAdapter);
-        spinner4.setAdapter(contentTypeAdapter);
-        spinner5.setAdapter(contentTypeAdapter);
-        spinner6.setAdapter(contentTypeAdapter);
-        spinner7.setAdapter(contentTypeAdapter);
-        spinner8.setAdapter(contentTypeAdapter);
         spinner1.setOnItemClickListener(this);
         btnContentAdd = (Button) findViewById(R.id.btnContentAdd);
 
@@ -157,26 +143,6 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         else {
             switch (contentNum){
                 case 1:
-                    findViewById(R.id.content2).setVisibility(View.VISIBLE);
-                    break;
-                case 2:
-                    findViewById(R.id.content3).setVisibility(View.VISIBLE);
-                    break;
-                case 3:
-                    findViewById(R.id.content4).setVisibility(View.VISIBLE);
-                    break;
-                case 4:
-                    findViewById(R.id.content5).setVisibility(View.VISIBLE);
-                    break;
-                case 5:
-                    findViewById(R.id.content6).setVisibility(View.VISIBLE);
-                    break;
-                case 6:
-                    findViewById(R.id.content7).setVisibility(View.VISIBLE);
-                    break;
-                case 7:
-                    findViewById(R.id.content8).setVisibility(View.VISIBLE);
-                    break;
             }
             contentNum++;
             btnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
@@ -218,30 +184,39 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
             switch (view.getId()){
                 case R.id.coral:
                     color = R.color.coral;
+                    theme = 1;
                     break;
                 case R.id.indigo:
                     color = R.color.indigo;
+                    theme = 2;
                     break;
                 case R.id.yellow:
                     color = R.color.yellow;
+                    theme = 3;
                     break;
                 case R.id.purple:
                     color = R.color.purple;
+                    theme = 4;
                     break;
                 case R.id.green:
                     color = R.color.green;
+                    theme = 5;
                     break;
                 case R.id.pink:
                     color = R.color.pink;
+                    theme = 6;
                     break;
                 case R.id.blue:
                     color = R.color.blue;
+                    theme = 7;
                     break;
                 case R.id.gray:
                     color = R.color.gray;
+                    theme = 8;
                     break;
                 default:
                     color = R.color.white;
+                    theme = 0;
             }
 
             for (int i=0; i<mTheme.size();i++) {

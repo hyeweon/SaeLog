@@ -18,7 +18,7 @@ public class MyCategory {
     @ColumnInfo(name="category_thumbnail")
     private String thumbnail;
 
-    // 테마 색상 (0 ~ 7)
+    // 테마 색상 (0 ~ 8)
     @ColumnInfo(name="category_color")
     private int color;
 
