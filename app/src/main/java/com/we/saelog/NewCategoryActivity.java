@@ -22,10 +22,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.we.saelog.Adapter.NewCategoryContentsAdapter;
 import com.we.saelog.Adapter.NewCategoryTypeAdapter;
 import com.we.saelog.room.CategoryDAO;
 import com.we.saelog.room.CategoryDB;
@@ -37,6 +40,7 @@ import java.util.Arrays;
 public class NewCategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener {
 
     CategoryDB db;
+    NewCategoryContentsAdapter mRecyclerAdapter;
 
     public Intent intent;
     int theme;
@@ -124,12 +128,20 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         mIndicator = findViewById(R.id.indicator);
         new TabLayoutMediator(mIndicator, mViewPager, (tab, position) -> tab.view.setClickable(false)).attach();
 
+        //
+        mRecyclerAdapter = new NewCategoryContentsAdapter();
+        Integer[] contents = {1,2,3,4,5,6,7,8};
+        mRecyclerAdapter.setContentsArrayList(new ArrayList<>(Arrays.asList(contents)));
+        // RecyclerView 초기화
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.contentRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+
         // Content Spinner
         contentNum = 1;
-        Spinner spinner1 = (Spinner)findViewById(R.id.spinner1);
+        Spinner spinner = (Spinner)findViewById(R.id.spinner1);
         ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(this, R.array.content_types, R.layout.item_content_type);
-        spinner1.setAdapter(contentTypeAdapter);
-        spinner1.setOnItemClickListener(this);
+        spinner.setAdapter(contentTypeAdapter);
         btnContentAdd = (Button) findViewById(R.id.btnContentAdd);
 
         Button btnSave = (Button) findViewById(R.id.btnSave1);
