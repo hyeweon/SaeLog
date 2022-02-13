@@ -10,13 +10,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -139,9 +137,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
         // Content Spinner
         contentNum = 1;
-        Spinner spinner = (Spinner)findViewById(R.id.spinner1);
-        ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(this, R.array.content_types, R.layout.item_content_type);
-        spinner.setAdapter(contentTypeAdapter);
+
         btnContentAdd = (Button) findViewById(R.id.btnContentAdd);
 
         Button btnSave = (Button) findViewById(R.id.btnSave1);
@@ -149,12 +145,13 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
     public void mOnClick(View v){
         if (contentNum==8) {
-            Toast.makeText(getApplicationContext(), "더이상 항목을 추가할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "항목은 최대 8개까지 가능합니다.", Toast.LENGTH_SHORT).show();
             return;
         }
         else {
             switch (contentNum){
                 case 1:
+
             }
             contentNum++;
             btnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");

@@ -292,51 +292,6 @@
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
 
-            <LinearLayout
-                android:id="@+id/content1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="1. " />
-                <EditText
-                    android:id="@+id/content1Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray2"
-                    android:textColor="@color/gray4"
-                    android:textSize="15sp"
-                    android:background="@null"
-                    android:hint="항목을 입력해주세요" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <Spinner
-                    android:id="@+id/spinner1"
-                    android:layout_width="129dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:gravity="center"
-                    />
-                <ImageButton
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:src="@drawable/icon_delete"/>
-            </LinearLayout>
             <Button
                 android:id="@+id/btnContentAdd"
                 android:layout_width="wrap_content"

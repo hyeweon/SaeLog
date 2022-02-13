@@ -3,6 +3,9 @@ package com.we.saelog.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,12 +39,20 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView mContentNum;
+        Spinner mSpinner;
+        ArrayAdapter contentTypeAdapter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            mContentNum = (TextView) itemView.findViewById(R.id.contentNum);
+            mSpinner = (Spinner) itemView.findViewById(R.id.spinner);
+            contentTypeAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.content_types, R.layout.item_content_type);
+            mSpinner.setAdapter(contentTypeAdapter);
         }
 
         public void onBind(Integer integer) {
+            mContentNum.setText(integer.toString() + ". ");
         }
     }
 }
