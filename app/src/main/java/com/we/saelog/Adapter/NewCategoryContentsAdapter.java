@@ -45,6 +45,7 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            // 항목 커스텀
             mContentNum = (TextView) itemView.findViewById(R.id.contentNum);
             mSpinner = (Spinner) itemView.findViewById(R.id.spinner);
             contentTypeAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.content_types, R.layout.item_content_type);
