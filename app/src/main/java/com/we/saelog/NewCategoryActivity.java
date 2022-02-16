@@ -44,6 +44,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     int theme;
     int contentNum;
 
+    ArrayList<Integer> contents = new ArrayList<Integer>();
+
     private static final int GET_IMAGE_FOR_ThumbNail = 100;
 
     public Toolbar mToolbar;
@@ -128,8 +130,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
         //
         mRecyclerAdapter = new NewCategoryContentsAdapter();
-        Integer[] contents = {1,2,3,4,5,6,7,8};
-        mRecyclerAdapter.setContentsArrayList(new ArrayList<>(Arrays.asList(contents)));
+        contents.add(1);
+        mRecyclerAdapter.setContentsArrayList(contents);
         // RecyclerView 초기화
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.contentRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -149,11 +151,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
             return;
         }
         else {
-            switch (contentNum){
-                case 1:
-
-            }
-            contentNum++;
+            contents.add(++contentNum);
+            mRecyclerAdapter.setContentsArrayList(contents);
             btnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
         }
     }
