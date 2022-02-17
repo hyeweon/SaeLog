@@ -9,7 +9,9 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -44,7 +46,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     int theme;
     int contentNum;
 
-    ArrayList<Integer> contents = new ArrayList<Integer>();
+    ArrayList<String> contentTitles = new ArrayList<String>();
 
     private static final int GET_IMAGE_FOR_ThumbNail = 100;
 
@@ -130,8 +132,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
         //
         mRecyclerAdapter = new NewCategoryContentsAdapter();
-        contents.add(1);
-        mRecyclerAdapter.setContentsArrayList(contents);
+        contentTitles.add(null);
+        mRecyclerAdapter.setContentsArrayList(contentTitles);
         // RecyclerView 초기화
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.contentRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -151,8 +153,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
             return;
         }
         else {
-            contents.add(++contentNum);
-            mRecyclerAdapter.setContentsArrayList(contents);
+            contentTitles.add(null);
+            mRecyclerAdapter.setContentsArrayList(contentTitles);
             btnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
         }
     }
@@ -237,6 +239,31 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+    }
+
+    // List View
+    public class ListViewAdapter extends BaseAdapter {
+        ArrayList<String> items = new ArrayList<String>();
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            return null;
+        }
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용

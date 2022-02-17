@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategoryContentsAdapter.ViewHolder> {
     private ArrayList<Integer> contentsArrayList;
-    String[] contentTitles = new String[8];
+    private ArrayList<String> contentTitles = new ArrayList<String>();
 
     @NonNull
     @Override
@@ -35,14 +35,22 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
         holder.onBind(contentsArrayList.get(position));
     }
 
-    public void setContentsArrayList(ArrayList<Integer> contentsArrayList) {
-        this.contentsArrayList = contentsArrayList;
-        notifyItemInserted(contentsArrayList.size() - 1);
+    public void setContentsArrayList(ArrayList<String> contentTitles) {
+        this.contentTitles = contentTitles;
+        contentTitles.add(null);
+        notifyItemInserted(contentTitles.size() - 1);
+    }
+
+    public void addItem(int position){
+        contentTitles.add(null);
+        contentTitles.remove(position);
+        notifyDataSetChanged();
     }
 
     public void deleteItem(int position){
         contentsArrayList.remove(contentsArrayList.size() - 1);
-        notifyItemRemoved(position);
+        contentTitles.remove(position);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -71,7 +79,7 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     mcontentTitle.setTypeface(Typeface.DEFAULT_BOLD);
-                    contentTitles[getAdapterPosition()] = charSequence.toString();
+                    contentTitles.set(getAdapterPosition(), charSequence.toString());
                 }
 
                 @Override
@@ -86,14 +94,17 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
             mBtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    deleteItem(position);
+                    deleteItem(getAdapterPosition());
                 }
             });
         }
+        // set 필요x
+        // 추가 삭제 함수만 만들기
+        // 삭제하면 arraylist에서 지워지고 dataset 바뀜
 
         public void onBind(Integer integer) {
             mContentNum.setText(integer.toString() + ". ");
+            mcontentTitle.setText(contentTitles.get(getAdapterPosition()));
         }
     }
 }

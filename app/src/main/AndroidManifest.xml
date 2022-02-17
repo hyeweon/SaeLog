@@ -10,19 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaeLog">
         <activity
-            android:name=".intro.LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".intro.WalkthroughActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SettingActivity"
-            android:exported="true" />
-        <activity
-            android:name=".PostDetailsActivity"
-            android:exported="true"
-            android:theme="@style/Transparent" />
-        <activity
             android:name=".intro.IntroActivity"
             android:exported="true">
             <intent-filter>
@@ -32,10 +19,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewCategoryActivity"
+            android:name=".intro.WalkthroughActivity"
+            android:exported="true" />
+        <activity
+            android:name=".intro.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NewCategoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PostDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Transparent" />
+        <activity
+            android:name=".SettingActivity"
             android:exported="true" />
     </application>
 
