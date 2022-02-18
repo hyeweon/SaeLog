@@ -17,13 +17,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -41,9 +41,10 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
     CategoryDB db;
     NewCategoryContentsAdapter mRecyclerAdapter;
+    ListViewAdapter mListViewAdapter;
 
     public Intent intent;
-    int theme;
+    int theme = 0;
     int contentNum;
 
     ArrayList<String> contentTitles = new ArrayList<String>();
@@ -57,6 +58,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     public ArrayList<CheckBox> mTheme;
     public ViewPager2 mViewPager;
     public TabLayout mIndicator;
+    public ListView mContentList;
 
     public Button btnContentAdd;
 
@@ -130,7 +132,14 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         mIndicator = findViewById(R.id.indicator);
         new TabLayoutMediator(mIndicator, mViewPager, (tab, position) -> tab.view.setClickable(false)).attach();
 
+        // Content List
+        mListViewAdapter = new ListViewAdapter();
+
         //
+        mContentList = (ListView) findViewById(R.id.contentList);
+        mContentList.setAdapter(mListViewAdapter);
+
+        /*
         mRecyclerAdapter = new NewCategoryContentsAdapter();
         contentTitles.add(null);
         mRecyclerAdapter.setContentsArrayList(contentTitles);
@@ -138,6 +147,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.contentRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecyclerAdapter);
+         */
 
         // Content Spinner
         contentNum = 1;
@@ -160,8 +170,11 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     }
 
     public void saveOnClick(View v){
-        if(mTitle.getText().toString().trim().length() <= 0) {        // 제목이 입력되지 않은 경우
+        if(mTitle.getText().toString().trim().length() <= 0) {      // 제목이 입력되지 않은 경우
             Toast.makeText(this, "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        else if(theme == 0){                                        // 테마가 선택되지 않은 경우
+            Toast.makeText(this, "카테고리 테마를 선택해주세요.", Toast.LENGTH_SHORT).show();
         }else{
             // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
             new InsertAsyncTask(db.categoryDAO())
@@ -241,28 +254,30 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
     }
 
-    // List View
+    // List View Adapter
     public class ListViewAdapter extends BaseAdapter {
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<String> contents = new ArrayList<String>();
 
         @Override
         public int getCount() {
-            return 0;
+            return contents.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return null;
+            return contents.get(i);
         }
 
         @Override
         public long getItemId(int i) {
-            return 0;
+            return i;
         }
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
+            TextView mContentOrder = (TextView) view.findViewById(R.id.contentOrder);
+            mContentOrder.setText(String.format("%d. ", i));
+            return view;
         }
     }
 

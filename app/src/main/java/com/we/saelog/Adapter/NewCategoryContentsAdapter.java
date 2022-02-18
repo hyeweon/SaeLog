@@ -68,7 +68,7 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // 항목 커스텀
-            mContentNum = (TextView) itemView.findViewById(R.id.contentNum);
+            //mContentNum = (TextView) itemView.findViewById(R.id.contentNum);
             mcontentTitle = (EditText) itemView.findViewById(R.id.contentTitle);
             mcontentTitle.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -103,7 +103,7 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
         // 삭제하면 arraylist에서 지워지고 dataset 바뀜
 
         public void onBind(Integer integer) {
-            mContentNum.setText(integer.toString() + ". ");
+            //mContentNum.setText(integer.toString() + ". ");
             mcontentTitle.setText(contentTitles.get(getAdapterPosition()));
         }
     }
