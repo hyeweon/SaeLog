@@ -57,10 +57,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     prefs.edit().putString("name", mName.getText().toString()).apply();
                     prefs.edit().putString("bio", mBio.getText().toString()).apply();
 
-                    // 다음 버튼 클릭 시 WalkThrough Activity 종료
+                    // WalkThrough Activity 종료
                     WalkthroughActivity walkthroughActivity = (WalkthroughActivity) WalkthroughActivity.walkthroughActivity;
                     walkthroughActivity.finish();
-                    // 다음 버튼 클릭 시 MainActivity 실행
+                    // MainActivity 실행
                     Intent intent;
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);

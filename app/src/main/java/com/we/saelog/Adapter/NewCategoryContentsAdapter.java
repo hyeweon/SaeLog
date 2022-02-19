@@ -20,8 +20,7 @@ import com.we.saelog.R;
 import java.util.ArrayList;
 
 public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategoryContentsAdapter.ViewHolder> {
-    private ArrayList<Integer> contentsArrayList;
-    private ArrayList<String> contentTitles = new ArrayList<String>();
+    public ArrayList<String> contentTitles = new ArrayList<>();
 
     @NonNull
     @Override
@@ -32,43 +31,36 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
 
     @Override
     public void onBindViewHolder(@NonNull NewCategoryContentsAdapter.ViewHolder holder, int position) {
-        holder.onBind(contentsArrayList.get(position));
+        holder.onBind(contentTitles.get(position));
     }
 
-    public void setContentsArrayList(ArrayList<String> contentTitles) {
-        this.contentTitles = contentTitles;
+    public void addItem(){
         contentTitles.add(null);
         notifyItemInserted(contentTitles.size() - 1);
     }
 
-    public void addItem(int position){
-        contentTitles.add(null);
-        contentTitles.remove(position);
-        notifyDataSetChanged();
-    }
-
     public void deleteItem(int position){
-        contentsArrayList.remove(contentsArrayList.size() - 1);
         contentTitles.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return contentsArrayList.size();
+        return contentTitles.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mContentNum;
+        TextView mContentOrder;
         EditText mcontentTitle;
         Spinner mSpinner;
-        ArrayAdapter contentTypeAdapter;
         ImageButton mBtnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // 항목 커스텀
-            //mContentNum = (TextView) itemView.findViewById(R.id.contentNum);
+
+            mContentOrder = (TextView) itemView.findViewById(R.id.contentOrder);
+
+            // Title
             mcontentTitle = (EditText) itemView.findViewById(R.id.contentTitle);
             mcontentTitle.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -87,9 +79,13 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
                     mcontentTitle.setTypeface(Typeface.DEFAULT_BOLD);
                 }
             });
+
+            // Spinner
             mSpinner = (Spinner) itemView.findViewById(R.id.spinner);
-            contentTypeAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.content_types, R.layout.item_content_type);
+            ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.content_types, R.layout.item_content_type);
             mSpinner.setAdapter(contentTypeAdapter);
+
+            // Delete
             mBtnDelete = (ImageButton) itemView.findViewById(R.id.btnDelete);
             mBtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,13 +94,10 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
                 }
             });
         }
-        // set 필요x
-        // 추가 삭제 함수만 만들기
-        // 삭제하면 arraylist에서 지워지고 dataset 바뀜
 
-        public void onBind(Integer integer) {
-            //mContentNum.setText(integer.toString() + ". ");
-            mcontentTitle.setText(contentTitles.get(getAdapterPosition()));
+        public void onBind(String item) {
+            mContentOrder.setText(String.format("%d. ", getAdapterPosition() + 1));
+            mcontentTitle.setText(item);
         }
     }
 }

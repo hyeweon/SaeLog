@@ -19,8 +19,8 @@ public class MyCategory {
     private String thumbnail;
 
     // 테마 색상 (0 ~ 8)
-    @ColumnInfo(name="category_color")
-    private int color;
+    @ColumnInfo(name="category_theme")
+    private int theme;
 
     // 뷰 형식 (0 ~ 5)
     @ColumnInfo(name="category_type")
@@ -95,9 +95,9 @@ public class MyCategory {
     private int content8Type;
 
     // 생성자
-    public MyCategory(String title, int color, int type, int contentsNum) {
+    public MyCategory(String title, int theme, int type, int contentsNum) {
         this.title = title;
-        this.color = color;
+        this.theme = theme;
         this.type = type;
         this.contentsNum = contentsNum;
     }
@@ -112,8 +112,8 @@ public class MyCategory {
     public String getThumbnail() {
         return thumbnail;
     }
-    public int getColor() {
-        return color;
+    public int getTheme() {
+        return theme;
     }
     public int getType() {
         return type;
@@ -179,8 +179,8 @@ public class MyCategory {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
-    public void setColor(int color) {
-        this.color = color;
+    public void setTheme(int theme) {
+        this.theme = theme;
     }
     public void setType(int type) {
         this.type = type;

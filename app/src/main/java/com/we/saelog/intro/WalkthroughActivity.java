@@ -38,7 +38,7 @@ public class WalkthroughActivity extends AppCompatActivity implements View.OnCli
         // Indicator
         mIndicator = findViewById(R.id.indicator);
 
-        // Array List
+        // View Pager Array List
         ArrayList<String> walkthroughArrayList = new ArrayList<>();
         walkthroughArrayList.add("새록으로 관심사에 따라\n분류하여 아카이빙하기");
         walkthroughArrayList.add("주제에 맞는 다양한 템플릿을\n선택하여 아카이빙하기");

@@ -12,21 +12,19 @@ import com.we.saelog.R;
 
 public class IntroActivity extends AppCompatActivity {
 
-    public SharedPreferences prefs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        // SharedPreferences 호출
-        prefs = getSharedPreferences("Pref", MODE_PRIVATE);
-
         checkFirstRun();
     }
 
     public void checkFirstRun() {
+        // SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("Pref", MODE_PRIVATE);
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+
         // 실행 후 1초 뒤에 Activity 전환
         Handler handler = new Handler();
         handler.postDelayed(new Runnable(){

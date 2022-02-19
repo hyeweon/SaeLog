@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".NewCategoryActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -22,11 +23,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8.5dp"
-                android:textColor="@color/gray4"
+                android:textColor="#6A6A6A"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:text="제목"/>
@@ -34,7 +36,7 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/gray2"
+                android:textColorHint="#A3A3A3"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:background="@null"
@@ -44,13 +46,13 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="8.5dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/gray2" />
+                android:background="#A3A3A3" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/gray4"
+                android:textColor="#6A6A6A"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:text="테마"/>
@@ -233,13 +235,13 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/gray2" />
+                android:background="#A3A3A3" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="17dp"
-                android:textColor="@color/gray4"
+                android:textColor="#6A6A6A"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:text="유형"/>
@@ -275,20 +277,19 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="31dp"
-                android:background="@color/gray2" />
+                android:background="#A3A3A3" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray4"
+                android:textColor="#6A6A6A"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:text="항목 만들기"/>
-            <ListView
-                android:id="@+id/contentList"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
             <Button
                 android:id="@+id/btnContentAdd"
@@ -301,14 +302,16 @@
                 android:background="@drawable/btn_content_add"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:text="항목 추가하기 (1/8)"
-                android:onClick="mOnClick"/>
+                android:text="항목 추가하기 (1/8)" />
+
             <Button
                 android:id="@+id/btnSave1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="save"
                 android:onClick="saveOnClick"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

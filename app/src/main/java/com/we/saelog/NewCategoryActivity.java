@@ -9,21 +9,18 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -37,17 +34,15 @@ import com.we.saelog.room.MyCategory;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NewCategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener {
+public class NewCategoryActivity extends AppCompatActivity {
 
-    CategoryDB db;
-    NewCategoryContentsAdapter mRecyclerAdapter;
-    ListViewAdapter mListViewAdapter;
+    private CategoryDB db;
+    private NewCategoryContentsAdapter mRecyclerAdapter;
 
-    public Intent intent;
-    int theme = 0;
-    int contentNum;
-
-    ArrayList<String> contentTitles = new ArrayList<String>();
+    private String title;
+    private int theme;
+    private int contentNum;
+    private ArrayList<String> contentTitles;
 
     private static final int GET_IMAGE_FOR_ThumbNail = 100;
 
@@ -58,9 +53,8 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
     public ArrayList<CheckBox> mTheme;
     public ViewPager2 mViewPager;
     public TabLayout mIndicator;
-    public ListView mContentList;
-
-    public Button btnContentAdd;
+    public RecyclerView mRecyclerView;
+    public Button mBtnContentAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +67,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         // Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        // Title 텍스트 Bold 처리
+        // Title
         mTitle = findViewById(R.id.title);
         mTitle.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,7 +77,7 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mTitle.setTypeface(Typeface.DEFAULT_BOLD);
+                mTitle.setTypeface(Typeface.DEFAULT_BOLD);      // 입력 시 텍스트 Bold
             }
 
             @Override
@@ -92,8 +86,9 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
             }
         });
 
+        // Thumbnail
         mThumbnail = findViewById(R.id.thumbnail);
-        mThumbnail.setOnClickListener(click);
+        mThumbnail.setOnClickListener(clickListener);
 
         // Theme
         CheckBox mCoral = (CheckBox)findViewById(R.id.coral);
@@ -104,18 +99,19 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         CheckBox mPink = (CheckBox)findViewById(R.id.pink);
         CheckBox mBlue = (CheckBox)findViewById(R.id.blue);
         CheckBox mGray = (CheckBox)findViewById(R.id.gray);
-        mCoral.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mIndigo.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mYellow.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mPurple.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mGreen.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mPink.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mBlue.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
-        mGray.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
+        mCoral.setOnCheckedChangeListener(themeListener);
+        mIndigo.setOnCheckedChangeListener(themeListener);
+        mYellow.setOnCheckedChangeListener(themeListener);
+        mPurple.setOnCheckedChangeListener(themeListener);
+        mGreen.setOnCheckedChangeListener(themeListener);
+        mPink.setOnCheckedChangeListener(themeListener);
+        mBlue.setOnCheckedChangeListener(themeListener);
+        mGray.setOnCheckedChangeListener(themeListener);
         mTheme = new ArrayList<CheckBox>(Arrays.asList(mCoral, mIndigo, mYellow, mPurple, mGreen, mPink, mBlue, mGray));
         mCardView = findViewById(R.id.cardView);
 
-        // Category Type View Pager
+        // Type
+        // View Pager
         mViewPager = findViewById(R.id.viewPager);
         ArrayList<Drawable> drawableArrayList = new ArrayList<>();
         drawableArrayList.add(getDrawable(R.drawable.type1));
@@ -125,48 +121,29 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         drawableArrayList.add(getDrawable(R.drawable.type1));
         drawableArrayList.add(getDrawable(R.drawable.test_image));
 
-        // Category Type Adapter
+        // View Pager Adapter
         mViewPager.setAdapter(new NewCategoryTypeAdapter(drawableArrayList));
 
-        // Category Type Indicator
+        // Indicator
         mIndicator = findViewById(R.id.indicator);
         new TabLayoutMediator(mIndicator, mViewPager, (tab, position) -> tab.view.setClickable(false)).attach();
 
-        // Content List
-        mListViewAdapter = new ListViewAdapter();
-
-        //
-        mContentList = (ListView) findViewById(R.id.contentList);
-        mContentList.setAdapter(mListViewAdapter);
-
-        /*
+        // Content
+        // Recycler View Adapter
         mRecyclerAdapter = new NewCategoryContentsAdapter();
-        contentTitles.add(null);
-        mRecyclerAdapter.setContentsArrayList(contentTitles);
-        // RecyclerView 초기화
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.contentRecyclerView);
+        mRecyclerAdapter.addItem();
+
+        // Recycler View
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecyclerAdapter);
-         */
 
-        // Content Spinner
+        // 항목 추가하기 버튼
         contentNum = 1;
-
-        btnContentAdd = (Button) findViewById(R.id.btnContentAdd);
+        mBtnContentAdd = (Button) findViewById(R.id.btnContentAdd);
+        mBtnContentAdd.setOnClickListener(clickListener);
 
         Button btnSave = (Button) findViewById(R.id.btnSave1);
-    }
-
-    public void mOnClick(View v){
-        if (contentNum==8) {
-            Toast.makeText(getApplicationContext(), "항목은 최대 8개까지 가능합니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        else {
-            contentTitles.add(null);
-            mRecyclerAdapter.setContentsArrayList(contentTitles);
-            btnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
-        }
     }
 
     public void saveOnClick(View v){
@@ -176,110 +153,97 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
         else if(theme == 0){                                        // 테마가 선택되지 않은 경우
             Toast.makeText(this, "카테고리 테마를 선택해주세요.", Toast.LENGTH_SHORT).show();
         }else{
+            title = mTitle.getText().toString();
+            contentTitles = mRecyclerAdapter.contentTitles;
+            MyCategory newCategory = new MyCategory(title, theme, 0, contentNum);
+
             // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
-            new InsertAsyncTask(db.categoryDAO())
-                    .execute(new MyCategory(mTitle.getText().toString(), 0, 0, 0));
-            mTitle.setText(null);
+            new InsertAsyncTask(db.categoryDAO()).execute(newCategory);
+
+            onBackPressed();
         }
     }
 
-    // Thumbnail
-    final View.OnClickListener click = new View.OnClickListener() {
+    final View.OnClickListener clickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.thumbnail:
+                case R.id.thumbnail:        // Thumbnail
+                    Intent intent;
                     intent = new Intent(Intent.ACTION_PICK);
                     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                     startActivityForResult(intent, GET_IMAGE_FOR_ThumbNail);
                     break;
-                default:
+                case R.id.btnContentAdd:    // 항목 추가하기
+                    if (contentNum==8) {
+                        Toast.makeText(getApplicationContext(), "항목은 최대 8개까지 가능합니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else {
+                        contentNum++;
+                        mRecyclerAdapter.addItem();
+                        mBtnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
+                    }
                     break;
             }
         }
     };
 
     // Theme
-    public void onCheckedChanged(CompoundButton view, boolean b) {
-        int color;
-        if(b) {
-            switch (view.getId()){
-                case R.id.coral:
-                    color = R.color.coral;
-                    theme = 1;
-                    break;
-                case R.id.indigo:
-                    color = R.color.indigo;
-                    theme = 2;
-                    break;
-                case R.id.yellow:
-                    color = R.color.yellow;
-                    theme = 3;
-                    break;
-                case R.id.purple:
-                    color = R.color.purple;
-                    theme = 4;
-                    break;
-                case R.id.green:
-                    color = R.color.green;
-                    theme = 5;
-                    break;
-                case R.id.pink:
-                    color = R.color.pink;
-                    theme = 6;
-                    break;
-                case R.id.blue:
-                    color = R.color.blue;
-                    theme = 7;
-                    break;
-                case R.id.gray:
-                    color = R.color.gray;
-                    theme = 8;
-                    break;
-                default:
-                    color = R.color.white;
-                    theme = 0;
+    final CompoundButton.OnCheckedChangeListener themeListener = new CompoundButton.OnCheckedChangeListener(){
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            int color;
+
+            if(b) {
+                switch (compoundButton.getId()){
+                    case R.id.coral:
+                        color = R.color.coral;
+                        theme = 1;
+                        break;
+                    case R.id.indigo:
+                        color = R.color.indigo;
+                        theme = 2;
+                        break;
+                    case R.id.yellow:
+                        color = R.color.yellow;
+                        theme = 3;
+                        break;
+                    case R.id.purple:
+                        color = R.color.purple;
+                        theme = 4;
+                        break;
+                    case R.id.green:
+                        color = R.color.green;
+                        theme = 5;
+                        break;
+                    case R.id.pink:
+                        color = R.color.pink;
+                        theme = 6;
+                        break;
+                    case R.id.blue:
+                        color = R.color.blue;
+                        theme = 7;
+                        break;
+                    case R.id.gray:
+                        color = R.color.gray;
+                        theme = 8;
+                        break;
+                    default:
+                        color = R.color.white;
+                        theme = 0;
+                }
+
+                for (int i=0; i<mTheme.size();i++) {
+                    if(mTheme.get(i)!=compoundButton) mTheme.get(i).setChecked(false);
+                }
+
+                mCardView.setCardBackgroundColor(getColor(color));
             }
-
-            for (int i=0; i<mTheme.size();i++) {
-                if(mTheme.get(i)!=view) mTheme.get(i).setChecked(false);
-            }
-            mCardView.setCardBackgroundColor(getColor(color));
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
-
-    // List View Adapter
-    public class ListViewAdapter extends BaseAdapter {
-        ArrayList<String> contents = new ArrayList<String>();
-
-        @Override
-        public int getCount() {
-            return contents.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return contents.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            TextView mContentOrder = (TextView) view.findViewById(R.id.contentOrder);
-            mContentOrder.setText(String.format("%d. ", i));
-            return view;
-        }
-    }
+    };
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
     public static class InsertAsyncTask extends AsyncTask<MyCategory, Void, Void> {
@@ -291,8 +255,11 @@ public class NewCategoryActivity extends AppCompatActivity implements CompoundBu
 
         @Override
         protected Void doInBackground(MyCategory... myCategory) {
-            categoryDAO.insert(myCategory[0]); // DB에 새로운 티켓 추가
+            categoryDAO.insert(myCategory[0]); // DB에 새로운 카테고리 추가
             return null;
         }
+    }
+
+    private class ViewHolder {
     }
 }
