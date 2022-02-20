@@ -44,6 +44,7 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
     private int theme;
     private int contentNum;
     private ArrayList<String> contentTitles;
+    private ArrayList<String> contentType;
 
     private static final int GET_IMAGE_FOR_ThumbNail = 100;
 
@@ -132,13 +133,13 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
         // Content
         // Recycler View Adapter
         mRecyclerAdapter = new NewCategoryContentsAdapter();
+        mRecyclerAdapter.setOnIconClickListener(this::onIconClick);
         mRecyclerAdapter.addItem();
 
         // Recycler View
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecyclerAdapter);
-
 
         // 항목 추가하기 버튼
         contentNum = mRecyclerAdapter.getItemCount();
@@ -185,8 +186,8 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
                         return;
                     }
                     else {
-                        contentNum++;
                         mRecyclerAdapter.addItem();
+                        contentNum = mRecyclerAdapter.getItemCount();
                         mBtnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
                     }
                     break;
@@ -250,8 +251,9 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
     };
 
     @Override
-    public void onIconClick(){
-
+    public void onIconClick() {
+        contentNum = mRecyclerAdapter.getItemCount();
+        mBtnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
@@ -267,8 +269,5 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
             categoryDAO.insert(myCategory[0]); // DB에 새로운 카테고리 추가
             return null;
         }
-    }
-
-    private class ViewHolder {
     }
 }

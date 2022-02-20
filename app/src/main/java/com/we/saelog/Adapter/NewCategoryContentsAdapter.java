@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,7 +21,10 @@ import com.we.saelog.R;
 import java.util.ArrayList;
 
 public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategoryContentsAdapter.ViewHolder> {
+    OnIconClickListener onIconClickListener;
+
     public ArrayList<String> contentTitles = new ArrayList<>();
+    public ArrayList<String> contentType = new ArrayList<>();
 
     @NonNull
     @Override
@@ -34,19 +38,27 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
         holder.onBind(contentTitles.get(position));
     }
 
+    // 항목 추가
     public void addItem(){
         contentTitles.add(null);
+        contentType.add(null);
         notifyItemInserted(contentTitles.size() - 1);
     }
 
+    // 항목 삭제
     public void deleteItem(int position){
         contentTitles.remove(position);
+        contentType.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         return contentTitles.size();
+    }
+
+    public void setOnIconClickListener(OnIconClickListener onIconClickListener) {
+        this.onIconClickListener = onIconClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -84,19 +96,25 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
             mSpinner = (Spinner) itemView.findViewById(R.id.spinner);
             ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.content_types, R.layout.item_content_type);
             mSpinner.setAdapter(contentTypeAdapter);
+            mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    contentType.set(getAdapterPosition(), mSpinner.getSelectedItem().toString());
+                }
 
-            // Delete
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    contentType.set(getAdapterPosition(), "단문형 텍스트");
+                }
+            });
+
+            // 삭제 버튼
             mBtnDelete = (ImageButton) itemView.findViewById(R.id.btnDelete);
             mBtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     deleteItem(getAdapterPosition());
-                    new OnIconClickListener() {
-                        @Override
-                        public void onIconClick() {
-
-                        }
-                    };
+                    onIconClickListener.onIconClick();
                 }
             });
         }
