@@ -27,6 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.we.saelog.Adapter.NewCategoryContentsAdapter;
 import com.we.saelog.Adapter.NewCategoryTypeAdapter;
+import com.we.saelog.Adapter.OnIconClickListener;
 import com.we.saelog.room.CategoryDAO;
 import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
@@ -34,7 +35,7 @@ import com.we.saelog.room.MyCategory;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NewCategoryActivity extends AppCompatActivity {
+public class NewCategoryActivity extends AppCompatActivity implements OnIconClickListener {
 
     private CategoryDB db;
     private NewCategoryContentsAdapter mRecyclerAdapter;
@@ -138,8 +139,9 @@ public class NewCategoryActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
+
         // 항목 추가하기 버튼
-        contentNum = 1;
+        contentNum = mRecyclerAdapter.getItemCount();
         mBtnContentAdd = (Button) findViewById(R.id.btnContentAdd);
         mBtnContentAdd.setOnClickListener(clickListener);
 
@@ -155,6 +157,8 @@ public class NewCategoryActivity extends AppCompatActivity {
         }else{
             title = mTitle.getText().toString();
             contentTitles = mRecyclerAdapter.contentTitles;
+            contentNum = mRecyclerAdapter.getItemCount();
+
             MyCategory newCategory = new MyCategory(title, theme, 0, contentNum);
 
             // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
@@ -244,6 +248,11 @@ public class NewCategoryActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public void onIconClick(){
+
+    }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
     public static class InsertAsyncTask extends AsyncTask<MyCategory, Void, Void> {

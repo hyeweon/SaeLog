@@ -91,6 +91,12 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
                 @Override
                 public void onClick(View view) {
                     deleteItem(getAdapterPosition());
+                    new OnIconClickListener() {
+                        @Override
+                        public void onIconClick() {
+
+                        }
+                    };
                 }
             });
         }
