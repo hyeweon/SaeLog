@@ -26,4 +26,8 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="ToolbarMenu">
+        <item name="android:textSize">19sp</item>
+    </style>
 </resources>

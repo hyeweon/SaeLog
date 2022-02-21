@@ -1,13 +1,22 @@
 package com.we.saelog;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +25,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -32,6 +44,8 @@ import com.we.saelog.room.CategoryDAO;
 import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,12 +55,14 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
     private NewCategoryContentsAdapter mRecyclerAdapter;
 
     private String title;
-    private int theme;
+    private String thumbnail;
+    private String theme;
+    private int type;
     private int contentNum;
     private ArrayList<String> contentTitles;
     private ArrayList<String> contentType;
 
-    private static final int GET_IMAGE_FOR_ThumbNail = 100;
+    private static final int GET_IMAGE_FOR_THUMBNAIL = 100;
 
     public Toolbar mToolbar;
     public EditText mTitle;
@@ -68,6 +84,11 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
 
         // Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_arrowback);
 
         // Title
         mTitle = findViewById(R.id.title);
@@ -145,28 +166,46 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
         contentNum = mRecyclerAdapter.getItemCount();
         mBtnContentAdd = (Button) findViewById(R.id.btnContentAdd);
         mBtnContentAdd.setOnClickListener(clickListener);
-
-        Button btnSave = (Button) findViewById(R.id.btnSave1);
     }
 
-    public void saveOnClick(View v){
-        if(mTitle.getText().toString().trim().length() <= 0) {      // 제목이 입력되지 않은 경우
-            Toast.makeText(this, "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+    // Tool Bar
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.new_category_toolbar_items, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.btnSave:
+                if(mTitle.getText().toString().trim().length() <= 0) {      // 제목이 입력되지 않은 경우
+                    Toast.makeText(getApplicationContext(), "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else if(theme == null){                                        // 테마가 선택되지 않은 경우
+                    Toast.makeText(getApplicationContext(), "카테고리 테마를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                }else{
+                    title = mTitle.getText().toString();
+                    type = mViewPager.getCurrentItem();
+                    contentNum = mRecyclerAdapter.getItemCount();
+                    contentType = mRecyclerAdapter.contentType;
+                    contentTitles = mRecyclerAdapter.contentTitles;
+
+                    MyCategory newCategory = new MyCategory(title, thumbnail, theme, type, contentNum);
+                    newCategory.setContentArray(contentType, contentTitles);
+
+                    // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
+                    new InsertAsyncTask(db.categoryDAO()).execute(newCategory);
+                    Toast.makeText(getApplicationContext(), "새로운 카테고리가 만들어졌어요.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
         }
-        else if(theme == 0){                                        // 테마가 선택되지 않은 경우
-            Toast.makeText(this, "카테고리 테마를 선택해주세요.", Toast.LENGTH_SHORT).show();
-        }else{
-            title = mTitle.getText().toString();
-            contentTitles = mRecyclerAdapter.contentTitles;
-            contentNum = mRecyclerAdapter.getItemCount();
-
-            MyCategory newCategory = new MyCategory(title, theme, 0, contentNum);
-
-            // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
-            new InsertAsyncTask(db.categoryDAO()).execute(newCategory);
-
-            onBackPressed();
-        }
+        return super.onOptionsItemSelected(item);
     }
 
     final View.OnClickListener clickListener = new View.OnClickListener() {
@@ -178,7 +217,7 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
                     Intent intent;
                     intent = new Intent(Intent.ACTION_PICK);
                     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                    startActivityForResult(intent, GET_IMAGE_FOR_ThumbNail);
+                    startActivityForResult(intent, GET_IMAGE_FOR_THUMBNAIL);
                     break;
                 case R.id.btnContentAdd:    // 항목 추가하기
                     if (contentNum==8) {
@@ -195,6 +234,48 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
         }
     };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Uri selectedImageUri = null;
+        Bitmap bitmap = null;
+
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            switch (requestCode) {
+                case GET_IMAGE_FOR_THUMBNAIL:
+                    selectedImageUri = data.getData();
+                    mThumbnail.setImageURI(selectedImageUri);
+                    break;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                try {
+                    bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImageUri));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            thumbnail = BitmapToString(bitmap);
+        }
+    }
+
+    public static String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] bytes = baos.toByteArray();
+        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return temp;
+    }
+
     // Theme
     final CompoundButton.OnCheckedChangeListener themeListener = new CompoundButton.OnCheckedChangeListener(){
 
@@ -205,51 +286,43 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
             if(b) {
                 switch (compoundButton.getId()){
                     case R.id.coral:
-                        color = R.color.coral;
-                        theme = 1;
+                        theme = "#E16B6B";
                         break;
                     case R.id.indigo:
-                        color = R.color.indigo;
-                        theme = 2;
+                        theme = "#4A6FE9";
                         break;
                     case R.id.yellow:
-                        color = R.color.yellow;
-                        theme = 3;
+                        theme = "#FFB300";
                         break;
                     case R.id.purple:
-                        color = R.color.purple;
-                        theme = 4;
+                        theme = "#7D57FF";
                         break;
                     case R.id.green:
-                        color = R.color.green;
-                        theme = 5;
+                        theme = "#68C45D";
                         break;
                     case R.id.pink:
-                        color = R.color.pink;
-                        theme = 6;
+                        theme = "#DB4FBA";
                         break;
                     case R.id.blue:
-                        color = R.color.blue;
-                        theme = 7;
+                        theme = "#1CA6D9";
                         break;
                     case R.id.gray:
-                        color = R.color.gray;
-                        theme = 8;
+                        theme = "#777777";
                         break;
                     default:
-                        color = R.color.white;
-                        theme = 0;
+                        theme = "#ffffff";
                 }
 
                 for (int i=0; i<mTheme.size();i++) {
                     if(mTheme.get(i)!=compoundButton) mTheme.get(i).setChecked(false);
                 }
 
-                mCardView.setCardBackgroundColor(getColor(color));
+                mCardView.setCardBackgroundColor(Color.parseColor(theme));
             }
         }
     };
 
+    // 항목 추가하기 버튼
     @Override
     public void onIconClick() {
         contentNum = mRecyclerAdapter.getItemCount();

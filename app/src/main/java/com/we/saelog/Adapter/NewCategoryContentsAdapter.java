@@ -41,7 +41,7 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
     // 항목 추가
     public void addItem(){
         contentTitles.add(null);
-        contentType.add(null);
+        contentType.add("단문형 텍스트");
         notifyItemInserted(contentTitles.size() - 1);
     }
 

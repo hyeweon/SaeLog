@@ -10,14 +10,25 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:background="@color/white"
         android:elevation="6dp"
-        app:menu="@menu/new_category_toolbar_items"/>
+        android:theme="@style/ToolbarMenu">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="카테고리"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -290,6 +301,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
             <Button
                 android:id="@+id/btnContentAdd"
@@ -303,13 +315,6 @@
                 android:textStyle="bold"
                 android:textSize="15sp"
                 android:text="항목 추가하기 (1/8)" />
-
-            <Button
-                android:id="@+id/btnSave1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="save"
-                android:onClick="saveOnClick"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

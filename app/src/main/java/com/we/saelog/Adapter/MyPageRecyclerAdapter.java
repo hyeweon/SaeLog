@@ -1,11 +1,17 @@
 package com.we.saelog.Adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.R;
@@ -43,16 +49,33 @@ public class MyPageRecyclerAdapter extends RecyclerView.Adapter<MyPageRecyclerAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        CardView mCardView;
+        ImageView mThumbnail;
+        TextView mTitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // 포스트를 보여줄 TextView를 id로 불러오기
-            title = (TextView) itemView.findViewById(R.id.categoryTitle);
+            mCardView = (CardView) itemView.findViewById(R.id.cardView);
+            mThumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
+            mTitle = (TextView) itemView.findViewById(R.id.categoryTitle);
         }
 
         void onBind(MyCategory item){
-            title.setText(item.getTitle());                             // 목록에 티켓 제목이 보이게 설정
+            mCardView.setCardBackgroundColor(Color.parseColor(item.getTheme()));
+            mTitle.setText(item.getTitle());
+            Bitmap bitmapThumbnail = StringToBitmap(item.getThumbnail());
+            mThumbnail.setImageBitmap(bitmapThumbnail);
+        }
+    }
+
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
         }
     }
 }

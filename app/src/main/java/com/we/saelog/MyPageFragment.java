@@ -113,7 +113,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         mRecyclerAdapter = new MyPageRecyclerAdapter();
 
         // 임시 객체로 RecyclerView 설정
-        MyCategory initCategory = new MyCategory("", 0, 0, 0);
+        MyCategory initCategory = new MyCategory("", "", "#ffffff", 0, 0);
         List<MyCategory> intiData = new ArrayList<>();
         intiData.add(initCategory);
         mRecyclerAdapter.setMyCategoryArrayList(intiData);

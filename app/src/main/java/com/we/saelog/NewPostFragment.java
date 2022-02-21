@@ -2,21 +2,18 @@ package com.we.saelog;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.we.saelog.room.MyPost;
 import com.we.saelog.room.PostDAO;
@@ -27,7 +24,7 @@ import com.we.saelog.room.PostDB;
  * Use the {@link NewPostFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewPostFragment extends Fragment implements View.OnClickListener {
+public class NewPostFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,10 +57,10 @@ public class NewPostFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    androidx.appcompat.widget.Toolbar toolbar;
-    private EditText mTitle;
-
     PostDB db;
+
+    private Toolbar mToolbar;
+    private EditText mTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,11 +80,10 @@ public class NewPostFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         // View에 inflate
         View v = inflater.inflate(R.layout.fragment_new_post, container, false);
+        setHasOptionsMenu(true);
 
+        mToolbar = v.findViewById(R.id.toolbar);
         mTitle = v.findViewById(R.id.title);
-        Button btnSave = (Button) v.findViewById(R.id.btnSave1);
-        btnSave.setOnClickListener(this);
-        toolbar = v.findViewById(R.id.toolbar);
 
         return v;
     }
@@ -95,41 +91,23 @@ public class NewPostFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.new_post_toolbar_items,menu);
+        inflater.inflate(R.menu.new_post_toolbar_items, menu);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.btnSave:
-                        Toast.makeText(getActivity(),"등록 버튼 클릭",Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnSave1:
-                if(mTitle.getText().toString().trim().length() <= 0) {        // 제목이 입력되지 않은 경우
-                    Toast.makeText(getActivity(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.btnSave:
+                if(mTitle.getText().toString().trim().length() <= 0) {      // 제목이 입력되지 않은 경우
+                    Toast.makeText(getActivity(), "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
-                    // DB에 새로운 포스트 추가를 위한 AsyncTask 호출
-                    new InsertAsyncTask(db.postDAO())
-                            .execute(new MyPost(0, mTitle.getText().toString()));
+                    // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
+                    new InsertAsyncTask(db.postDAO()).execute(new MyPost(0, mTitle.getText().toString()));
                     mTitle.setText(null);
                 }
                 break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용

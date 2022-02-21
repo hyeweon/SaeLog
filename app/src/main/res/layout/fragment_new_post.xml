@@ -5,58 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewPostFragment">
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:menu="@menu/new_post_toolbar_items">
-        </androidx.appcompat.widget.Toolbar>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="제목" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:elevation="6dp"
+                android:theme="@style/ToolbarMenu">
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="short1"/>
-        <EditText
-            android:id="@+id/short1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="단문 텍스트 내용" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:textColorHint="#CDCDCD"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="23sp"
+                    android:hint="제목" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="long1"/>
-        <EditText
-            android:id="@+id/long1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="장문 텍스트 내용" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ratingbar1"/>
-        <RatingBar
-            android:id="@+id/ratingbar1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            style="@style/Widget.AppCompat.RatingBar.Indicator" />
-
-        <Button
-            android:id="@+id/btnSave1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="save"/>
-    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="#CDCDCD"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="26dp"
+                        android:textColor="#6A6A6A"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:text="대표 이미지"/>
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/icon_photo"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="215dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingHorizontal="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/test_image"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="#CDCDCD"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

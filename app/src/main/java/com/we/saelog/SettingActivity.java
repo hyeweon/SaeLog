@@ -44,10 +44,9 @@ public class SettingActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar(); //ActionBar 객체 생성(액션바 커스텀마이징을 위해)
-
-        actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
-        actionBar.setDisplayShowTitleEnabled(false); //기본 타이틀 제거
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
 
         prefs = getSharedPreferences("Pref",MODE_PRIVATE);
         String strProfileImage = prefs.getString("profileImage","");
@@ -75,7 +74,7 @@ public class SettingActivity extends AppCompatActivity {
     };
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Uri selectedImageUri = null;
 
         Bitmap bitmap = null;
@@ -140,5 +139,4 @@ public class SettingActivity extends AppCompatActivity {
         String temp = Base64.encodeToString(bytes, Base64.DEFAULT);//Base 64 방식으로byte 배열을 String으로 변환
         return temp;//String을 retrurn
     }
-
 }

@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+
 @Entity
 public class MyCategory {
     // 각 카테고리의 식별을 위한 ID (PrimaryKey)
@@ -18,9 +20,9 @@ public class MyCategory {
     @ColumnInfo(name="category_thumbnail")
     private String thumbnail;
 
-    // 테마 색상 (0 ~ 8)
+    // 테마 색상
     @ColumnInfo(name="category_theme")
-    private int theme;
+    private String theme;
 
     // 뷰 형식 (0 ~ 5)
     @ColumnInfo(name="category_type")
@@ -95,8 +97,9 @@ public class MyCategory {
     private int content8Type;
 
     // 생성자
-    public MyCategory(String title, int theme, int type, int contentsNum) {
+    public MyCategory(String title, String thumbnail, String theme, int type, int contentsNum) {
         this.title = title;
+        this.thumbnail = thumbnail;
         this.theme = theme;
         this.type = type;
         this.contentsNum = contentsNum;
@@ -112,7 +115,7 @@ public class MyCategory {
     public String getThumbnail() {
         return thumbnail;
     }
-    public int getTheme() {
+    public String getTheme() {
         return theme;
     }
     public int getType() {
@@ -179,7 +182,7 @@ public class MyCategory {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
-    public void setTheme(int theme) {
+    public void setTheme(String theme) {
         this.theme = theme;
     }
     public void setType(int type) {
@@ -234,27 +237,6 @@ public class MyCategory {
         this.content8Title = content8Title;
     }
 
-    public String getContentTitle(int n){
-        switch (n){
-            case 1:
-                return content1Title;
-            case 2:
-                return content2Title;
-            case 3:
-                return content3Title;
-            case 4:
-                return content4Title;
-            case 5:
-                return content5Title;
-            case 6:
-                return content6Title;
-            case 7:
-                return content7Title;
-            case 8:
-                return content8Title;
-        }
-        return null;
-    }
     public int getContentType(int n){
         switch (n){
             case 1:
@@ -273,7 +255,120 @@ public class MyCategory {
                 return content7Type;
             case 8:
                 return content8Type;
+            default:
+                return 0;
         }
-        return 0;
+    }
+    public String getContentTitle(int n){
+        switch (n){
+            case 1:
+                return content1Title;
+            case 2:
+                return content2Title;
+            case 3:
+                return content3Title;
+            case 4:
+                return content4Title;
+            case 5:
+                return content5Title;
+            case 6:
+                return content6Title;
+            case 7:
+                return content7Title;
+            case 8:
+                return content8Title;
+            default:
+                return null;
+        }
+    }
+
+    public void setContentType(int n, String contentType){
+        int type = 0;
+        switch (contentType){
+            case "단문형 텍스트":
+                type = 1;
+                break;
+            case "장문형 텍스트":
+                type = 2;
+                break;
+            case "체크박스":
+                type = 3;
+                break;
+            case "별점":
+                type = 4;
+                break;
+            case "사진":
+                type = 5;
+                break;
+            default:
+                type = 0;
+                break;
+        }
+
+        switch (n){
+            case 1:
+                this.content1Type = type;
+                break;
+            case 2:
+                this.content2Type = type;
+                break;
+            case 3:
+                this.content3Type = type;
+                break;
+            case 4:
+                this.content4Type = type;
+                break;
+            case 5:
+                this.content5Type = type;
+                break;
+            case 6:
+                this.content6Type = type;
+                break;
+            case 7:
+                this.content7Type = type;
+                break;
+            case 8:
+                this.content8Type = type;
+                break;
+        }
+    }
+    public void setContentTitle(int n, String contentTitle){
+        switch (n){
+            case 1:
+                this.content1Title = contentTitle;
+                break;
+            case 2:
+                this.content2Title = contentTitle;
+                break;
+            case 3:
+                this.content3Title = contentTitle;
+                break;
+            case 4:
+                this.content4Title = contentTitle;
+                break;
+            case 5:
+                this.content5Title = contentTitle;
+                break;
+            case 6:
+                this.content6Title = contentTitle;
+                break;
+            case 7:
+                this.content7Title = contentTitle;
+                break;
+            case 8:
+                this.content8Title = contentTitle;
+                break;
+        }
+    }
+
+    public void setContentArray(ArrayList<String> contentTypeArray, ArrayList<String> contentTitleArray){
+        for (int i = 0; i < contentsNum; i++){
+            setContentType(i + 1, contentTypeArray.get(i));
+            setContentTitle(i + 1, contentTitleArray.get(i));
+        }
+        for (int i = contentsNum; i < 8; i++){
+            setContentType(i + 1, "none");
+            setContentTitle(i + 1, null);
+        }
     }
 }
