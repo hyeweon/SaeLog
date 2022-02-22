@@ -24,9 +24,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:background="@null"
-                    android:minHeight="0dp"
                     android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:background="@null"
                     android:textColor="@color/black"
                     android:textSize="19sp"
                     android:text="취소"/>
@@ -94,7 +94,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="20dp"
                     android:background="#CDCDCD"/>
             </LinearLayout>
 

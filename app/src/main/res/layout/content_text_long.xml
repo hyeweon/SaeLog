@@ -12,16 +12,16 @@
         android:textColor="#6A6A6A"
         android:textStyle="bold"
         android:textSize="20sp" />
-    <RatingBar
-        android:id="@+id/ratingbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"/>
-    <View
+    <EditText
+        android:id="@+id/text_short"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="17dp"
-        android:background="#CDCDCD"/>
+        android:layout_height="125dp"
+        android:layout_marginBottom="20dp"
+        android:padding="10dp"
+        android:background="@drawable/edittext_long"
+        android:textColorHint="#CDCDCD"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:gravity="top"
+        android:hint="장문형 텍스트"/>
 </LinearLayout>

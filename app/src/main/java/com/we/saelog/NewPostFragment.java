@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -88,8 +89,10 @@ public class NewPostFragment extends Fragment {
     ArrayList<ImageView> imageViews;
 
     String text;
+    Float rate;
     ArrayList<MyCategory> categories;
     ArrayList<String> categoryTitles;
+    ArrayList<String> contents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,6 +168,7 @@ public class NewPostFragment extends Fragment {
         mContainer = v.findViewById(R.id.container);
 
         shortTexts = new ArrayList<>();
+        ratingBars = new ArrayList<>();
 
         return v;
     }
@@ -180,6 +184,7 @@ public class NewPostFragment extends Fragment {
         switch (item.getItemId()){
             case R.id.btnSave:
                 text = shortTexts.get(0).getText().toString();
+                rate = ratingBars.get(0).getRating();
                 if(mTitle.getText().toString().trim().length() <= 0) {      // 제목이 입력되지 않은 경우
                     Toast.makeText(getActivity(), "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
@@ -197,26 +202,29 @@ public class NewPostFragment extends Fragment {
         mContainer.removeAllViews();
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        TextView title;
+        // recycler view로 대체 예정
         for (int i=1; categories.get(index).getContentType(i)!=0; i++){
             switch (categories.get(index).getContentType(i)){
                 case 1:
                     view = inflater.inflate(R.layout.content_text_short, mContainer, true);
+
                     shortTexts.add(view.findViewById(R.id.text_short));
                     break;
                 case 2:
-                    view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
+                    view = inflater.inflate(R.layout.content_text_long, mContainer, true);
                     break;
                 case 3:
-                    view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
+                    view = inflater.inflate(R.layout.content_checkbox, mContainer, true);
                     break;
                 case 4:
                     view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
+
+                    ratingBars.add(view.findViewById(R.id.ratingbar));
                     break;
                 case 5:
                     view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
                     break;
-                default:
-                    view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
             }
         }
     }
