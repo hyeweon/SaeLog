@@ -12,7 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -20,9 +19,26 @@
                 android:background="@color/white"
                 android:elevation="6dp"
                 android:theme="@style/ToolbarMenu">
-                <Spinner
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="@null"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:textColor="@color/black"
+                    android:textSize="19sp"
+                    android:text="취소"/>
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="197dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="center"
+                    />
             </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
@@ -81,6 +97,12 @@
                     android:layout_marginBottom="20dp"
                     android:background="#CDCDCD"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

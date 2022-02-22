@@ -95,6 +95,7 @@ public class NewCategoryContentsAdapter extends RecyclerView.Adapter<NewCategory
             // Spinner
             mSpinner = (Spinner) itemView.findViewById(R.id.spinner);
             ArrayAdapter contentTypeAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.content_types, R.layout.item_content_type);
+            contentTypeAdapter.setDropDownViewResource(R.layout.item_content_type_dropdown);
             mSpinner.setAdapter(contentTypeAdapter);
             mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
