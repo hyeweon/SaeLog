@@ -1,6 +1,5 @@
 package com.we.saelog;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -143,12 +141,12 @@ public class NewPostFragment extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                makeContentInput(i);
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                makeContentInput(0);
+
             }
         });
 
@@ -195,38 +193,6 @@ public class NewPostFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // 레이아웃 구성
-    public void makeContentInput(int index){
-        mContainer.removeAllViews();
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        TextView title;
-        // recycler view로 대체 예정
-        for (int i=1; categories.get(index).getContentType(i)!=0; i++){
-            switch (categories.get(index).getContentType(i)){
-                case 1:
-                    view = inflater.inflate(R.layout.content_text_short, mContainer, true);
-
-                    shortTexts.add(view.findViewById(R.id.text_short));
-                    break;
-                case 2:
-                    view = inflater.inflate(R.layout.content_text_long, mContainer, true);
-                    break;
-                case 3:
-                    view = inflater.inflate(R.layout.content_checkbox, mContainer, true);
-                    break;
-                case 4:
-                    view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
-
-                    ratingBars.add(view.findViewById(R.id.ratingbar));
-                    break;
-                case 5:
-                    view = inflater.inflate(R.layout.content_ratingbar, mContainer, true);
-                    break;
-            }
-        }
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
