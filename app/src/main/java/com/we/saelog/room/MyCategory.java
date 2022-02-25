@@ -4,10 +4,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity
-public class MyCategory {
+public class MyCategory implements Serializable {
     // 각 카테고리의 식별을 위한 ID (PrimaryKey)
     @PrimaryKey(autoGenerate = true)
     private int categoryID;

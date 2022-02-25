@@ -3,6 +3,7 @@ package com.we.saelog.Adapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.we.saelog.CategoryPostFragment;
+import com.we.saelog.MainActivity;
 import com.we.saelog.R;
 import com.we.saelog.room.MyCategory;
 
@@ -26,7 +29,7 @@ public class MyPageRecyclerAdapter extends RecyclerView.Adapter<MyPageRecyclerAd
     @NonNull
     @Override
     public MyPageRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_page_post, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_page_category, parent, false);
         return new ViewHolder(v);
     }
 
@@ -48,16 +51,33 @@ public class MyPageRecyclerAdapter extends RecyclerView.Adapter<MyPageRecyclerAd
         return myCategoryArrayList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;
         ImageView mThumbnail;
         TextView mTitle;
+
+        int categoryID;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.cardView);
             mThumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
             mTitle = (TextView) itemView.findViewById(R.id.categoryTitle);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("category", myCategoryArrayList.get(position));
+                        CategoryPostFragment fragment = new CategoryPostFragment();
+                        fragment.setArguments(bundle);
+                        ((MainActivity)itemView.getContext()).getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, fragment).commit();
+                    }
+                }
+            });
         }
 
         void onBind(MyCategory item){

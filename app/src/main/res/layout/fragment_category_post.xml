@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CategoryPostFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:elevation="6dp"
+        android:theme="@style/ToolbarMenu">
+        <TextView
+            android:id="@+id/categoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="카테고리"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="7dp"
+        android:backgroundTint="@color/yellow"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="0dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="55dp"
+            app:cardElevation="0dp">
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_image"/>
+        </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/tab"
+        app:tabTextAppearance="@style/Tab"
+        app:tabIndicatorHeight="3dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/firstTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전체글" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/secondTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마음글" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:overScrollMode="never"/>
+
+</LinearLayout>

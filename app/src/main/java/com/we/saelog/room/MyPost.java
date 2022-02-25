@@ -4,8 +4,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 @Entity
-public class MyPost {
+public class MyPost implements Serializable {
     // 각 포스트의 식별을 위한 ID (PrimaryKey)
     @PrimaryKey(autoGenerate = true)
     private int postID;
@@ -63,10 +66,12 @@ public class MyPost {
     public String content8;
 
     // 생성자
-    public MyPost(int category, String title) {
+    public MyPost(int category, String date, String title, String thumbnail) {
         this.category = category;
-        this.title = title;
         this.isHearted = false;
+        this.date = date;
+        this.title = title;
+        this.thumbnail = thumbnail;
     }
 
     // 각 Attribute에 접근할 때 사용하는 함수
@@ -128,5 +133,40 @@ public class MyPost {
                 return content8;
         }
         return null;
+    }
+
+    public void setContent(int n, String content){
+        switch (n){
+            case 1:
+                content1 = content;
+                break;
+            case 2:
+                content2 = content;
+                break;
+            case 3:
+                content3 = content;
+                break;
+            case 4:
+                content4 = content;
+                break;
+            case 5:
+                content5 = content;
+                break;
+            case 6:
+                content6 = content;
+                break;
+            case 7:
+                content7 = content;
+                break;
+            case 8:
+                content8 = content;
+                break;
+        }
+    }
+
+    public void setContentArray(int contentNum, ArrayList<String> content) {
+        for (int i = 0; i < contentNum; i++){
+            setContent(i + 1, content.get(i));
+        }
     }
 }

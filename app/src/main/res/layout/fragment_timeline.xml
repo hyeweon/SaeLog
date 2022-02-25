@@ -11,6 +11,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="@color/white"
+        android:elevation="6dp"
         app:menu="@menu/timeline_toolbar_items">
 
         <TextView
@@ -23,7 +25,13 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/tab"
+        app:tabTextAppearance="@style/Tab"
+        app:tabIndicatorColor="#6A6A6A"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="@color/black">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/firstTab"
             android:layout_width="wrap_content"

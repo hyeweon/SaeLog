@@ -3,7 +3,7 @@
     <style name="Theme.SaeLog" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/saelog_green</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimaryVariant">#D1D1D1</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/saelog_lightgreen</item>
@@ -11,13 +11,14 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="Transparent" parent="@style/Theme.AppCompat">
+    <style name="Transparent">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="fontFamily">sans-serif</item>
@@ -25,6 +26,11 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="Tab" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ToolbarMenu">

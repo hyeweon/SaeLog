@@ -138,11 +138,11 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
         mViewPager = findViewById(R.id.viewPager);
         ArrayList<Drawable> drawableArrayList = new ArrayList<>();
         drawableArrayList.add(getDrawable(R.drawable.type1));
-        drawableArrayList.add(getDrawable(R.drawable.test_image));
+        drawableArrayList.add(getDrawable(R.drawable.type5));
         drawableArrayList.add(getDrawable(R.drawable.type1));
-        drawableArrayList.add(getDrawable(R.drawable.test_image));
+        drawableArrayList.add(getDrawable(R.drawable.type5));
         drawableArrayList.add(getDrawable(R.drawable.type1));
-        drawableArrayList.add(getDrawable(R.drawable.test_image));
+        drawableArrayList.add(getDrawable(R.drawable.type5));
 
         // View Pager Adapter
         mViewPager.setAdapter(new NewCategoryTypeAdapter(drawableArrayList));

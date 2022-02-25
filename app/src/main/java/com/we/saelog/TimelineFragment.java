@@ -2,6 +2,9 @@ package com.we.saelog;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,10 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.we.saelog.Adapter.TimelineRecyclerAdapter;
@@ -91,7 +90,7 @@ public class TimelineFragment extends Fragment {
         mHeartedRecyclerAdapter = new TimelineRecyclerAdapter();
 
         // 임시 객체로 RecyclerView 설정
-        MyPost initPost = new MyPost(0, " ");
+        MyPost initPost = new MyPost(0, "", "", "");
         List<MyPost> intiData = new ArrayList<>();
         intiData.add(initPost);
         mRecyclerAdapter.setMyPostArrayList(intiData);

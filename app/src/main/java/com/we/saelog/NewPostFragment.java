@@ -2,6 +2,7 @@ package com.we.saelog;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,7 +21,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.we.saelog.Adapter.NewPostRecyclerAdapter;
 import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
 import com.we.saelog.room.MyPost;
@@ -31,6 +32,7 @@ import com.we.saelog.room.PostDAO;
 import com.we.saelog.room.PostDB;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -73,24 +75,18 @@ public class NewPostFragment extends Fragment {
 
     PostDB postDB;
     CategoryDB categoryDB;
+    NewPostRecyclerAdapter mRecyclerAdapter;
 
     private Toolbar mToolbar;
     private Spinner mSpinner;
     private Button mBtnBack;
     private EditText mTitle;
-    private ViewGroup mContainer;
-    private View view;
-    ArrayList<EditText> shortTexts;
-    ArrayList<EditText> longTexts;
-    ArrayList<CheckBox> checkBoxes;
-    ArrayList<RatingBar> ratingBars;
-    ArrayList<ImageView> imageViews;
 
-    String text;
-    Float rate;
-    ArrayList<MyCategory> categories;
-    ArrayList<String> categoryTitles;
-    ArrayList<String> contents;
+    private MyCategory currCategory;
+    private String title;
+    private ArrayList<MyCategory> categories;
+    private ArrayList<String> categoryTitles;
+    private ArrayList<String> contents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,6 +129,7 @@ public class NewPostFragment extends Fragment {
 
         categories = new ArrayList<>();
         categoryTitles = new ArrayList<>();
+        currCategory = new MyCategory("","","",0,0);
 
         // Spinner
         mSpinner = (Spinner) v.findViewById(R.id.spinner);
@@ -141,12 +138,14 @@ public class NewPostFragment extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                currCategory = categories.get(i);
+                mRecyclerAdapter.setCategory(currCategory);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                currCategory = categories.get(0);
+                mRecyclerAdapter.setCategory(currCategory);
             }
         });
 
@@ -163,10 +162,17 @@ public class NewPostFragment extends Fragment {
         });
 
         mTitle = v.findViewById(R.id.title);
-        mContainer = v.findViewById(R.id.container);
 
-        shortTexts = new ArrayList<>();
-        ratingBars = new ArrayList<>();
+        // Adapter 초기화
+        mRecyclerAdapter = new NewPostRecyclerAdapter();
+
+        // 임시 객체로 RecyclerView 설정
+        mRecyclerAdapter.setCategory(currCategory);
+
+        // RecyclerView 초기화
+        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));     // Linear Layout 사용
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
         return v;
     }
@@ -181,14 +187,20 @@ public class NewPostFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.btnSave:
-                text = shortTexts.get(0).getText().toString();
-                rate = ratingBars.get(0).getRating();
                 if(mTitle.getText().toString().trim().length() <= 0) {      // 제목이 입력되지 않은 경우
                     Toast.makeText(getActivity(), "카테고리명을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
+                    Calendar calendar = Calendar.getInstance();
+                    title = mTitle.getText().toString();
+                    MyPost newPost = new MyPost(currCategory.getCategoryID(), calendar.getTime().toString(), title,"");
+                    Log.d("Date", newPost.getDate());
+                    contents = mRecyclerAdapter.getContents();
+                    newPost.setContentArray(currCategory.getContentsNum(), contents);
+
                     // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
-                    new InsertAsyncTask(postDB.postDAO()).execute(new MyPost(0, mTitle.getText().toString()));
-                    mTitle.setText(null);
+                    new InsertAsyncTask(postDB.postDAO()).execute(newPost);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame, ((MainActivity) getActivity()).preFragment).commit();
                 }
                 break;
         }
