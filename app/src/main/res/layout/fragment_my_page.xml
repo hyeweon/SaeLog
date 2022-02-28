@@ -18,7 +18,8 @@
                 android:id="@+id/backgroundImage"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
-                android:scaleType="centerCrop" />
+                android:background="#CDCDCD"
+                android:scaleType="centerCrop"/>
 
             <ImageButton
                 android:id="@+id/btnSetting"
@@ -42,7 +43,7 @@
                     android:id="@+id/profileImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"/>
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout

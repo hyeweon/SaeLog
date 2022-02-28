@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -20,17 +21,19 @@
                 android:background="@color/white"
                 android:elevation="6dp"
                 android:theme="@style/ToolbarMenu">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:background="@null"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:background="@null"
+                    android:text="취소"
                     android:textColor="@color/black"
-                    android:textSize="19sp"
-                    android:text="취소"/>
+                    android:textSize="19sp" />
+
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="197dp"
@@ -38,8 +41,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="14dp"
                     android:background="@null"
-                    android:gravity="center"
-                    />
+                    android:gravity="center" />
             </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
@@ -59,39 +61,48 @@
                     android:textSize="23sp"
                     android:hint="제목" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="#CDCDCD"/>
                 <LinearLayout
+                    android:id="@+id/thumbnailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="#CDCDCD"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="26dp"
-                        android:textColor="#6A6A6A"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:text="대표 이미지"/>
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="26dp"
+                            android:textColor="#6A6A6A"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:text="대표 이미지"/>
+                        <ImageView
+                            android:id="@+id/btnThumbnailAdd"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/icon_photo"/>
+                    </LinearLayout>
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/icon_photo"/>
+                        android:id="@+id/thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"/>
                 </LinearLayout>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="215dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:paddingHorizontal="15dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/test_image"/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

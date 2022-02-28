@@ -3,16 +3,20 @@ package com.we.saelog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
@@ -24,17 +28,28 @@ import java.io.IOException;
 
 public class SettingActivity extends AppCompatActivity {
     public SharedPreferences prefs;
+    private Intent intent;
 
     private static final int GET_IMAGE_FOR_BACKGROUNDIMAGE = 201;
     private static final int GET_IMAGE_FOR_PROFILEIMAGE = 202;
+    private Toolbar mToolbar;
     private ImageView backgroundImage, profileImage;
-    private Intent intent;
-    private Toolbar toolbar;
+    private EditText mName, mBio;
+
+    String strProfileImage, strBackgroundImage, name, bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        // Toolbar
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_arrowback);
 
         backgroundImage = findViewById(R.id.backgroundImage);
         backgroundImage.setOnClickListener(click);
@@ -42,14 +57,29 @@ public class SettingActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.profileImage);
         profileImage.setOnClickListener(click);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-
         prefs = getSharedPreferences("Pref",MODE_PRIVATE);
-        String strProfileImage = prefs.getString("profileImage","");
+
+        // 배경 이미지
+        String strBackgroundImage = prefs.getString("backgroundImage", "");
+        Bitmap bitmapBackgroundImage = StringToBitmap(strBackgroundImage);
+        backgroundImage.setImageBitmap(bitmapBackgroundImage);
+
+        // 프로필 이미지
+        String strProfileImage = prefs.getString("profileImage", "");
+        Bitmap bitmapProfileImage = StringToBitmap(strProfileImage);
+        profileImage.setImageBitmap(bitmapProfileImage);
+
+        // 이름
+        name = prefs.getString("name", "");
+        mName = (EditText) findViewById(R.id.name);
+        mName.setText(name);
+        mName.addTextChangedListener(textWatcher);
+
+        // 자기소개
+        bio = prefs.getString("bio", "");
+        mBio = (EditText) findViewById(R.id.bio);
+        mBio.setText(bio);
+        mBio.addTextChangedListener(textWatcher);
     }
 
     final View.OnClickListener click = new View.OnClickListener() {
@@ -78,7 +108,6 @@ public class SettingActivity extends AppCompatActivity {
         Uri selectedImageUri = null;
 
         Bitmap bitmap = null;
-        String strImage;
 
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -86,6 +115,7 @@ public class SettingActivity extends AppCompatActivity {
             switch (requestCode) {
                 case GET_IMAGE_FOR_BACKGROUNDIMAGE:
                     selectedImageUri = data.getData();
+                    backgroundImage.setImageURI(selectedImageUri);
                     break;
                 case GET_IMAGE_FOR_PROFILEIMAGE:
                     selectedImageUri = data.getData();
@@ -108,35 +138,82 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
 
-            strImage = BitmapToString(bitmap);
-            prefs.edit().putString("profileImage", strImage).apply();
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.btnBack: { //toolbar의 back키 눌렀을 때 동작
-                finish();
-                return true;
+            switch (requestCode) {
+                case GET_IMAGE_FOR_BACKGROUNDIMAGE:
+                    strBackgroundImage = BitmapToString(bitmap);
+                    break;
+                case GET_IMAGE_FOR_PROFILEIMAGE:
+                    strProfileImage = BitmapToString(bitmap);
+                    break;
             }
         }
-        return super.onOptionsItemSelected(item);
     }
 
-    //ToolBar에 menu.xml을 인플레이트함
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(mName.hasFocus()){
+                name = s.toString();
+            } else {
+                bio = s.toString();
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    //Tool Bar
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.setting_toolbar_items, menu);
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.btnSave:
+                if(strBackgroundImage!=null) prefs.edit().putString("backgroundImage", strBackgroundImage).apply();
+                if(strProfileImage!=null) prefs.edit().putString("profileImage", strProfileImage).apply();
+                if(name!=null) prefs.edit().putString("name", name).apply();
+                if(bio!=null) prefs.edit().putString("bio", bio).apply();
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // from https://stickode.com/detail.html?no=1297
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
     // from https://stickode.com/detail.html?no=1297
     public static String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(); //바이트 배열을 차례대로 읽어 들이기위한 ByteArrayOutputStream클래스 선언
-        bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);//bitmap을 압축 (숫자 70은 70%로 압축한다는 뜻)
-        byte[] bytes = baos.toByteArray();//해당 bitmap을 byte배열로 바꿔준다.
-        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);//Base 64 방식으로byte 배열을 String으로 변환
-        return temp;//String을 retrurn
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
+        byte[] bytes = baos.toByteArray();
+        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return temp;
     }
 }

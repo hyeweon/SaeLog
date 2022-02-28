@@ -138,11 +138,11 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
         mViewPager = findViewById(R.id.viewPager);
         ArrayList<Drawable> drawableArrayList = new ArrayList<>();
         drawableArrayList.add(getDrawable(R.drawable.type1));
+        drawableArrayList.add(getDrawable(R.drawable.type2));
+        drawableArrayList.add(getDrawable(R.drawable.type3));
+        drawableArrayList.add(getDrawable(R.drawable.type4));
         drawableArrayList.add(getDrawable(R.drawable.type5));
-        drawableArrayList.add(getDrawable(R.drawable.type1));
-        drawableArrayList.add(getDrawable(R.drawable.type5));
-        drawableArrayList.add(getDrawable(R.drawable.type1));
-        drawableArrayList.add(getDrawable(R.drawable.type5));
+        drawableArrayList.add(getDrawable(R.drawable.type6));
 
         // View Pager Adapter
         mViewPager.setAdapter(new NewCategoryTypeAdapter(drawableArrayList));
@@ -190,7 +190,7 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
                     Toast.makeText(getApplicationContext(), "카테고리 테마를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
                     title = mTitle.getText().toString();
-                    type = mViewPager.getCurrentItem();
+                    type = mViewPager.getCurrentItem() + 1;
                     contentNum = mRecyclerAdapter.getItemCount();
                     contentType = mRecyclerAdapter.contentType;
                     contentTitles = mRecyclerAdapter.contentTitles;
@@ -235,7 +235,7 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
     };
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         Uri selectedImageUri = null;
@@ -266,14 +266,6 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
 
             thumbnail = BitmapToString(bitmap);
         }
-    }
-
-    public static String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
-        return temp;
     }
 
     // Theme
@@ -327,6 +319,14 @@ public class NewCategoryActivity extends AppCompatActivity implements OnIconClic
     public void onIconClick() {
         contentNum = mRecyclerAdapter.getItemCount();
         mBtnContentAdd.setText("항목 추가하기 (" + Integer.toString(contentNum)+"/8)");
+    }
+
+    public static String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
+        byte[] bytes = baos.toByteArray();
+        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return temp;
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용

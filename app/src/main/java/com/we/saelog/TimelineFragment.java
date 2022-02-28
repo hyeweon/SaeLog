@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +65,8 @@ public class TimelineFragment extends Fragment {
     TimelineRecyclerAdapter mRecyclerAdapter;
     TimelineRecyclerAdapter mHeartedRecyclerAdapter;
 
+    Button mFilter;
+
     TabLayout tabs;
 
     @Override
@@ -84,6 +87,14 @@ public class TimelineFragment extends Fragment {
         // Inflate the layout for this fragment
         // view에 inflate
         View v = inflater.inflate(R.layout.fragment_timeline, container, false);
+
+        mFilter = v.findViewById(R.id.filter);
+        mFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFilter.setText("오래된순");
+           }
+        });
 
         // Adapter 초기화
         mRecyclerAdapter = new TimelineRecyclerAdapter();

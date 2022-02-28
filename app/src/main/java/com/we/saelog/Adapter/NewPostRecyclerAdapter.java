@@ -20,6 +20,7 @@ import com.we.saelog.room.MyCategory;
 import java.util.ArrayList;
 
 public class NewPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private MyCategory category;
     private ArrayList<String> contents;
 

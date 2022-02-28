@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 // 카테고리를 저장할 DB
-@Database(entities = {MyPost.class}, version = 1, exportSchema=false)
+@Database(entities = {MyPost.class}, version = 2, exportSchema=false)
 public abstract class PostDB extends RoomDatabase{
     private static PostDB INSTANCE = null;
     public abstract PostDAO postDAO();

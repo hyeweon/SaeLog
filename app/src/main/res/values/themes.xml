@@ -18,7 +18,7 @@
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="Transparent">
+    <style name="Transparent" parent="Theme.SaeLog">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="fontFamily">sans-serif</item>
@@ -26,6 +26,7 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 
     <style name="Tab" parent="TextAppearance.MaterialComponents.Button">

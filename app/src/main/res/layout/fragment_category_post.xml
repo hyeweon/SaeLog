@@ -33,7 +33,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="7dp"
-        android:backgroundTint="@color/yellow"
         app:cardCornerRadius="60dp"
         app:cardElevation="0dp">
         <com.google.android.material.card.MaterialCardView
@@ -77,7 +76,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:overScrollMode="never"/>
 

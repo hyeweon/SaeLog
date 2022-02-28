@@ -3,13 +3,14 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="10dp"
     android:background="#ECECEC">
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/test_image"/>
     <LinearLayout
         android:layout_width="150dp"
         android:layout_height="match_parent"
@@ -24,20 +25,40 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:text="포스트명"/>
+        <TextView
+            android:id="@+id/postCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="카테고리"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/postDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:textColor="#6A6A6A"
+            android:textSize="14sp"
+            android:text="2021.01.10"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="16dp"
-        android:paddingBottom="12.62dp"
+        android:paddingBottom="13dp"
         android:orientation="vertical"
         android:gravity="end">
         <View
             android:layout_width="match_parent"
-            android:layout_height="65.1dp"/>
+            android:layout_height="65dp"/>
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="19.8dp"
+            android:layout_height="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/icon_detail"/>
         <View
@@ -47,8 +68,8 @@
         <ImageButton
             android:id="@+id/btnHeart"
             android:layout_width="wrap_content"
-            android:layout_height="20.16dp"
+            android:layout_height="20dp"
             android:background="@null"
-            android:scaleType="fitEnd" />
+            android:scaleType="fitEnd"/>
     </LinearLayout>
 </LinearLayout>

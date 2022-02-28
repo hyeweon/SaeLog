@@ -1,11 +1,15 @@
 package com.we.saelog.Adapter;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.PostDetailsActivity;
 import com.we.saelog.R;
+import com.we.saelog.room.CategoryDAO;
+import com.we.saelog.room.CategoryDB;
+import com.we.saelog.room.MyCategory;
 import com.we.saelog.room.MyPost;
 import com.we.saelog.room.PostDAO;
 import com.we.saelog.room.PostDB;
@@ -22,9 +29,11 @@ import java.util.List;
 
 // 저장한 티켓을 목록으로 보여주기 위한 Recycler View Adapter
 public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecyclerAdapter.ViewHolder> {
+
     private ArrayList<MyPost> myPostArrayList;
 
     PostDB db;
+    CategoryDB categoryDB;
 
     @NonNull
     @Override
@@ -52,7 +61,8 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        ImageView mThumbnail;
+        TextView title, mCategory, mDate;
         ImageButton btnHeart;
 
         public ViewHolder(@NonNull View itemView) {
@@ -60,9 +70,13 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
 
             // DB 호출
             db = PostDB.getAppDatabase(itemView.getContext());
+            categoryDB = CategoryDB.getAppDatabase(itemView.getContext());
 
+            mThumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
             // 포스트를 보여줄 TextView를 id로 불러오기
             title = (TextView) itemView.findViewById(R.id.postTitle);
+            mCategory = (TextView) itemView.findViewById(R.id.postCategory);
+            mDate = (TextView) itemView.findViewById(R.id.postDate);
             // 마음글 여부를 나타낼 ImageButton을 id로 불러오기
             btnHeart = itemView.findViewById(R.id.btnHeart);
 
@@ -102,8 +116,9 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
                         String itemTitle = item.getTitle();             // 포스트의 제목 정보 가져오기
                         int itemID = item.getPostID();                  // 포스트 삭제를 위한 ID 가져오기
 
-                        // Intent로 해당 티켓의 정보 교환
+                        // Intent로 해당 포스트의 정보 교환
                         intent = new Intent(v.getContext(), PostDetailsActivity.class);
+                        intent.putExtra("post", item);
                         intent.putExtra("title",itemTitle);
                         intent.putExtra("ID",itemID);
                         v.getContext().startActivity(intent);           // Intent 호출
@@ -113,7 +128,22 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
         }
 
         void onBind(MyPost item){
-            title.setText(item.getTitle());                             // 목록에 티켓 제목이 보이게 설정
+            title.setText(item.getTitle());
+            mDate.setText(item.getDate());
+
+            // Thumbnail
+            String strThumbnail = item.getThumbnail();
+            if(strThumbnail != null && strThumbnail != "") {
+                Bitmap bitmapThumbnail = StringToBitmap(strThumbnail);
+                mThumbnail.setImageBitmap(bitmapThumbnail);
+            }
+
+            try {
+                String categoryTitle = new CategoryAsyncTask(categoryDB.categoryDAO()).execute(item.getCategory()).get();
+                mCategory.setText(categoryTitle);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             if(item.getHearted()==true){
                 btnHeart.setImageResource(R.drawable.icon_fullheart);
@@ -124,7 +154,37 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
         }
     }
 
+    // from https://stickode.com/detail.html?no=1297
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
+    public static class CategoryAsyncTask extends AsyncTask<Integer, Void, String> {
+        private final CategoryDAO categoryDAO;
+
+        public  CategoryAsyncTask(CategoryDAO categoryDAO){
+            this.categoryDAO = categoryDAO;
+        }
+
+        @Override
+        protected String doInBackground(Integer... ID) {
+            List<MyCategory> categoryList = categoryDAO.findByID(ID[0]);
+            try {
+                return categoryList.get(0).getTitle();
+            } catch (Exception e) {
+                return "";
+            }
+        }
+    }
+
     public static class UpdateAsyncTask extends AsyncTask<MyPost, Void, Void> {
         private final PostDAO postDAO;
 

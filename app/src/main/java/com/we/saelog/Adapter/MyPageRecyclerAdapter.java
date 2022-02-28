@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.CategoryPostFragment;
@@ -73,8 +74,11 @@ public class MyPageRecyclerAdapter extends RecyclerView.Adapter<MyPageRecyclerAd
                         bundle.putSerializable("category", myCategoryArrayList.get(position));
                         CategoryPostFragment fragment = new CategoryPostFragment();
                         fragment.setArguments(bundle);
-                        ((MainActivity)itemView.getContext()).getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.frame, fragment).commit();
+
+                        FragmentTransaction transaction = ((MainActivity)itemView.getContext()).getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame, fragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
                     }
                 }
             });

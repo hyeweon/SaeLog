@@ -25,7 +25,7 @@ public class MyCategory implements Serializable {
     @ColumnInfo(name="category_theme")
     private String theme;
 
-    // 뷰 형식 (0 ~ 5)
+    // 뷰 형식 (1 ~ 6)
     @ColumnInfo(name="category_type")
     private int type;
 

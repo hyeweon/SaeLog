@@ -1,13 +1,19 @@
 package com.we.saelog;
 
-import android.os.AsyncTask;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.we.saelog.Adapter.CategoryPostRecyclerAdapter;
 import com.we.saelog.room.MyCategory;
 import com.we.saelog.room.MyPost;
-import com.we.saelog.room.PostDAO;
 import com.we.saelog.room.PostDB;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +68,8 @@ public class CategoryPostFragment extends Fragment {
     CategoryPostRecyclerAdapter mRecyclerAdapter;
 
     private TextView mCategoryTitle;
+    private ImageView mCategoryThumbnail;
+    private CardView mCardView;
 
     private MyCategory category;
     private ArrayList<MyPost> posts;
@@ -95,9 +103,12 @@ public class CategoryPostFragment extends Fragment {
         mCategoryTitle = v.findViewById(R.id.categoryTitle);
         mCategoryTitle.setText(category.getTitle());
 
-        posts = new ArrayList<>();
+        mCategoryThumbnail = v.findViewById((R.id.thumbnail));
+        Bitmap bitmapImage = StringToBitmap(category.getThumbnail());
+        mCategoryThumbnail.setImageBitmap(bitmapImage);
 
-        new CategoryPostFragment.PostAsyncTask(db.postDAO()).execute(category.getCategoryID());
+        mCardView = (CardView) v.findViewById(R.id.cardView);
+        mCardView.setCardBackgroundColor(Color.parseColor(category.getTheme()));
 
         // Adapter 초기화
         mRecyclerAdapter = new CategoryPostRecyclerAdapter();
@@ -105,34 +116,41 @@ public class CategoryPostFragment extends Fragment {
 
         // 임시 객체로 RecyclerView 설정
         MyPost initPost = new MyPost(0, "", "", "");
-        ArrayList<MyPost> intiData = new ArrayList<>();
+        List<MyPost> intiData = new ArrayList<>();
         intiData.add(initPost);
-        mRecyclerAdapter.setMyPostArrayList(intiData);
+        mRecyclerAdapter.setPosts(intiData);
 
         // RecyclerView 초기화
         RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-    if(category.getType()!=100){
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));    // Grid Layout 사용
-    } else {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));             // Linear Layout 사용
-    }
+        if(category.getType()==1){
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));            // Grid Layout 사용
+            mRecyclerView.setPadding(-2,0,-2,0);
+        } else if(category.getType()==6){
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));            // Grid Layout 사용
+            mRecyclerView.setPadding(60,0,60,0);
+        } else {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));                     // Linear Layout 사용
+        }
         mRecyclerView.setAdapter(mRecyclerAdapter);
+
+        // LiveData observe
+        db.postDAO().findByCategory(category.getCategoryID()).observe(getActivity(), new Observer<List<MyPost>>() {
+            @Override
+            public void onChanged(List<MyPost> posts) {
+                mRecyclerAdapter.setPosts(posts);   // 티켓 목록에 반영
+            }
+        });
 
         return v;
     }
 
-    // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
-    public class PostAsyncTask extends AsyncTask<Integer, Void, Void> {
-        private PostDAO postDAO;
-
-        public  PostAsyncTask(PostDAO postDAO){
-            this.postDAO = postDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Integer... id) {
-            posts.addAll(postDAO.findByID(id[0]));
-            mRecyclerAdapter.setMyPostArrayList(posts);
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
             return null;
         }
     }

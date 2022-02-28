@@ -103,6 +103,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         TextView mBio = (TextView) v.findViewById(R.id.bio);
         mBio.setText(bio);
 
+        // 배경 이미지
+        ImageView backgroundImage = (ImageView) v.findViewById(R.id.backgroundImage);
+        String strBackgroundImage = prefs.getString("backgroundImage", "");
+        Bitmap bitmapBackgroundImage = StringToBitmap(strBackgroundImage);
+        backgroundImage.setImageBitmap(bitmapBackgroundImage);
+
         // 프로필 이미지
         ImageView profileImage = (ImageView) v.findViewById(R.id.profileImage);
         String strProfileImage = prefs.getString("profileImage", "");
@@ -134,6 +140,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    public void refresh(){
+        getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -143,10 +153,11 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getActivity(), NewCategoryActivity.class);
                 startActivity(intent);
                 break;
-            // 설정 아이콘을 눌렀을 때 새로운 카테고리를 생성하기 위한 Activity 실행
+            // 설정 아이콘을 눌렀을 때 Setting Activity 실행
             case R.id.btnSetting:
                 intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
+                getActivity().finish();
                 break;
         }
     }

@@ -18,6 +18,9 @@ public interface PostDAO {
     @Query("SELECT * FROM MyPost where post_is_hearted=:isHearted")
     LiveData<List<MyPost>> getHearted(boolean isHearted);    // LiveData를 사용하여 변화가 있을 때마다 observe
 
+    @Query("SELECT * FROM MyPost where post_category=:categoryID")
+    LiveData<List<MyPost>> findByCategory(int categoryID);  // LiveData를 사용하여 변화가 있을 때마다 observe
+
     @Query("SELECT * FROM MyPost where postID=:ID")
     List<MyPost> findByID(int ID);
 

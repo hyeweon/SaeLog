@@ -18,8 +18,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="타임라인"
-            android:textSize="20sp" />
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="타임라인"/>
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
@@ -44,16 +46,29 @@
             android:text="마음글" />
     </com.google.android.material.tabs.TabLayout>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginStart="20dp"
+        android:drawableRight="@drawable/icon_list_down"
+        android:drawableLeft="@drawable/icon_list"
+        android:background="@null"
+        android:minHeight="0dp"
+        android:textColor="#6A6A6A"
+        android:text="최신순"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"/>
+        android:overScrollMode="never"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/heartedRecyclerView"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"/>
+        android:overScrollMode="never"/>
 
 </LinearLayout>

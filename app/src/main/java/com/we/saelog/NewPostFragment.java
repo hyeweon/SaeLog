@@ -1,7 +1,16 @@
 package com.we.saelog;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,10 +22,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -31,6 +43,8 @@ import com.we.saelog.room.MyPost;
 import com.we.saelog.room.PostDAO;
 import com.we.saelog.room.PostDB;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -77,16 +91,21 @@ public class NewPostFragment extends Fragment {
     CategoryDB categoryDB;
     NewPostRecyclerAdapter mRecyclerAdapter;
 
+    private MyCategory currCategory;
+    private String title;
+    private String thumbnail;
+    private ArrayList<MyCategory> categories;
+    private ArrayList<String> categoryTitles;
+    private ArrayList<String> contents;
+
+    private static final int GET_IMAGE_FOR_THUMBNAIL = 100;
+
     private Toolbar mToolbar;
     private Spinner mSpinner;
     private Button mBtnBack;
     private EditText mTitle;
-
-    private MyCategory currCategory;
-    private String title;
-    private ArrayList<MyCategory> categories;
-    private ArrayList<String> categoryTitles;
-    private ArrayList<String> contents;
+    private LinearLayout mThumbnailLayout;
+    private ImageView mThumbnail, mThumbnailAdd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,6 +181,20 @@ public class NewPostFragment extends Fragment {
         });
 
         mTitle = v.findViewById(R.id.title);
+        mThumbnailLayout = v.findViewById(R.id.thumbnailLayout);
+        if(currCategory.getType()==5) mThumbnailLayout.setVisibility(View.GONE);
+
+        mThumbnailAdd = v.findViewById(R.id.btnThumbnailAdd);
+        mThumbnailAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_IMAGE_FOR_THUMBNAIL);
+            }
+        });
+        mThumbnail = v.findViewById(R.id.thumbnail);
 
         // Adapter 초기화
         mRecyclerAdapter = new NewPostRecyclerAdapter();
@@ -192,19 +225,62 @@ public class NewPostFragment extends Fragment {
                 }else{
                     Calendar calendar = Calendar.getInstance();
                     title = mTitle.getText().toString();
-                    MyPost newPost = new MyPost(currCategory.getCategoryID(), calendar.getTime().toString(), title,"");
+                    MyPost newPost = new MyPost(currCategory.getCategoryID(), calendar.getTime().toString(), title, thumbnail);
                     Log.d("Date", newPost.getDate());
                     contents = mRecyclerAdapter.getContents();
                     newPost.setContentArray(currCategory.getContentsNum(), contents);
 
                     // DB에 새로운 카테고리 추가를 위한 AsyncTask 호출
                     new InsertAsyncTask(postDB.postDAO()).execute(newPost);
+                    mTitle.setText(null);
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame, ((MainActivity) getActivity()).preFragment).commit();
                 }
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Uri selectedImageUri = null;
+        Bitmap bitmap = null;
+
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            switch (requestCode) {
+                case GET_IMAGE_FOR_THUMBNAIL:
+                    selectedImageUri = data.getData();
+                    mThumbnail.setImageURI(selectedImageUri);
+                    break;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                try {
+                    bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(),selectedImageUri));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),selectedImageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            thumbnail = BitmapToString(bitmap);
+        }
+    }
+
+    public static String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] bytes = baos.toByteArray();
+        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return temp;
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
