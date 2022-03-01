@@ -3,12 +3,18 @@ package com.we.saelog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -65,7 +71,8 @@ public class TimelineFragment extends Fragment {
     TimelineRecyclerAdapter mRecyclerAdapter;
     TimelineRecyclerAdapter mHeartedRecyclerAdapter;
 
-    Button mFilter;
+    private Toolbar mToolbar;
+    private ToggleButton mFilter;
 
     TabLayout tabs;
 
@@ -79,6 +86,9 @@ public class TimelineFragment extends Fragment {
 
         // DB 호출
         db = PostDB.getAppDatabase(getActivity());
+
+        // Tool Bar
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -88,12 +98,19 @@ public class TimelineFragment extends Fragment {
         // view에 inflate
         View v = inflater.inflate(R.layout.fragment_timeline, container, false);
 
+        // Tool Bar
+        mToolbar = v.findViewById(R.id.toolbar);
+        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+
         mFilter = v.findViewById(R.id.filter);
-        mFilter.setOnClickListener(new View.OnClickListener() {
+        mFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                mFilter.setText("오래된순");
-           }
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mRecyclerAdapter.setToggleChecked(isChecked);
+                mHeartedRecyclerAdapter.setToggleChecked(isChecked);
+            }
         });
 
         // Adapter 초기화
@@ -166,6 +183,21 @@ public class TimelineFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.timeline_toolbar_items, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame, new PostSearchFragment()).commit();
+
+        return super.onOptionsItemSelected(item);
     }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용

@@ -6,11 +6,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -67,6 +74,7 @@ public class CategoryPostFragment extends Fragment {
     PostDB db;
     CategoryPostRecyclerAdapter mRecyclerAdapter;
 
+    private Toolbar mToolbar;
     private TextView mCategoryTitle;
     private ImageView mCategoryThumbnail;
     private CardView mCardView;
@@ -84,6 +92,9 @@ public class CategoryPostFragment extends Fragment {
 
         // DB 호출
         db = PostDB.getAppDatabase(getContext());
+
+        // Tool Bar
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -102,6 +113,13 @@ public class CategoryPostFragment extends Fragment {
         // Title
         mCategoryTitle = v.findViewById(R.id.categoryTitle);
         mCategoryTitle.setText(category.getTitle());
+
+        mToolbar = v.findViewById(R.id.toolbar);
+        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_arrowback);
 
         mCategoryThumbnail = v.findViewById((R.id.thumbnail));
         Bitmap bitmapImage = StringToBitmap(category.getThumbnail());
@@ -142,6 +160,28 @@ public class CategoryPostFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.categoy_post_toolbar_items, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame, new MyPageFragment()).commit();
+                break;
+            case R.id.btnSettings:
+                Toast.makeText(getActivity(), "카테고리는 수정할 수 없습니다\n(기능을 준비 중이에요)", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static Bitmap StringToBitmap(String encodedString) {

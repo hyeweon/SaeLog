@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import java.util.List;
 public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecyclerAdapter.ViewHolder> {
 
     private ArrayList<MyPost> myPostArrayList;
+    private boolean isToggleChecked = false;
 
     PostDB db;
     CategoryDB categoryDB;
@@ -44,7 +46,10 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
 
     @Override
     public void onBindViewHolder(@NonNull TimelineRecyclerAdapter.ViewHolder holder, int position) {
-        holder.onBind(myPostArrayList.get(position));
+        if(isToggleChecked == true){
+            int positionReverse = getItemCount() - position - 1;
+            holder.onBind(myPostArrayList.get(positionReverse));
+        } else holder.onBind(myPostArrayList.get(position));
     }
 
     public void setMyPostArrayList(List<MyPost> list){
@@ -52,6 +57,11 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
         ArrayList<MyPost> arrayList = new ArrayList<>();
         arrayList.addAll(list);
         myPostArrayList = arrayList;
+        notifyDataSetChanged();
+    }
+
+    public void setToggleChecked(boolean toggleChecked) {
+        isToggleChecked = toggleChecked;
         notifyDataSetChanged();
     }
 
@@ -136,6 +146,9 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
             if(strThumbnail != null && strThumbnail != "") {
                 Bitmap bitmapThumbnail = StringToBitmap(strThumbnail);
                 mThumbnail.setImageBitmap(bitmapThumbnail);
+            } else {
+                mThumbnail.setVisibility(View.GONE);
+                mDate.setGravity(Gravity.RIGHT);
             }
 
             try {

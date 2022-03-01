@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/white"
-        android:elevation="6dp"
-        app:menu="@menu/timeline_toolbar_items">
+        android:elevation="6dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,12 +25,12 @@
     </androidx.appcompat.widget.Toolbar>
 
     <EditText
+        android:id="@+id/searchTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:layout_marginHorizontal="20dp"
         android:drawableLeft="@drawable/icon_search_small"
-        android:drawableTint="@color/saelog_green"
         android:drawablePadding="18dp"
         android:background="@null"
         android:maxLines="1"
@@ -113,5 +112,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"/>
 </LinearLayout>
