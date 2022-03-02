@@ -1,72 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/gradient"
     android:padding="37dp"
     tools:context=".intro.LoginActivity">
 
     <TextView
+        android:id="@+id/loginText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="27sp"
-        android:text="계정을 생성하세요" />
+        android:text="계정을 생성하세요"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.2"/>
 
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="57dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="#E0E0E0"
         android:textColorHint="@color/white"
-        android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="18dp"
-        android:hint="이름"/>
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:hint="이름"
+        app:layout_constraintTop_toBottomOf="@+id/loginText"
+        app:layout_constraintBottom_toTopOf="@+id/bio"
+        app:layout_constraintVertical_chainStyle="packed"/>
     <EditText
         android:id="@+id/bio"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="60dp"
         android:backgroundTint="#E0E0E0"
         android:textColorHint="#E0E0E0"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="18dp"
-        android:hint="자기소개"/>
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:textSize="18sp"
+        android:hint="자기소개"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintBottom_toTopOf="@+id/btnGroup"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <LinearLayout
+        android:id="@+id/btnGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="240dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.6">
         <android.widget.Button
             android:id="@+id/btnPre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/btn_pre"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="이전"/>
         <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_width="40dp"
+            android:layout_height="0dp"/>
         <android.widget.Button
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/btn_next"
             android:textColor="@color/saelog_green"
             android:textStyle="bold"
@@ -74,4 +81,4 @@
             android:text="다음"/>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
