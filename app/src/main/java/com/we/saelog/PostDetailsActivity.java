@@ -2,6 +2,7 @@ package com.we.saelog;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -34,6 +35,15 @@ public class PostDetailsActivity extends AppCompatActivity {
 
         mDownBack = (ImageButton) findViewById(R.id.downBack);
         mDownBack.setOnClickListener(clickListener);
+        mDownBack.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    onBackPressed();
+                }
+                return false;
+            }
+        });
 
         // Title
         mTitle = findViewById(R.id.title);
