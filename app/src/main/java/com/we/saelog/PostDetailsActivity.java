@@ -2,6 +2,7 @@ package com.we.saelog;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,9 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.Adapter.PostDetailsRecyclerAdapter;
 import com.we.saelog.room.MyPost;
+import com.we.saelog.room.PostDAO;
+import com.we.saelog.room.PostDB;
+
+import java.util.List;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
+    PostDB db;
     PostDetailsRecyclerAdapter mRecyclerAdapter;
 
     private ImageButton mMenu;
@@ -37,6 +43,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
         post = (MyPost) intent.getSerializableExtra("post");
+
+        // DB 호출
+        db = PostDB.getAppDatabase(this);
 
         mMenu = findViewById(R.id.menu);
         mMenu.setOnClickListener(clickListener);
@@ -83,7 +92,8 @@ public class PostDetailsActivity extends AppCompatActivity {
 
                                     break;
                                 case R.id.btnDelete:
-
+                                    new PostDetailsActivity.DeleteAsyncTask(db.postDAO()).execute(post.getPostID());
+                                    onBackPressed();
                                     break;
                                 case R.id.btnSaveImage:
 
@@ -100,4 +110,20 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         }
     };
+
+    // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
+    public static class DeleteAsyncTask extends AsyncTask<Integer, Void, Void> {
+        private PostDAO postDAO;
+
+        public  DeleteAsyncTask(PostDAO postDAO){
+            this.postDAO = postDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... id) {
+            List<MyPost> deleteTicket = postDAO.findByID(id[0]);   // PrimaryKey로 티켓 찾기
+            postDAO.delete(deleteTicket.get(0));                      // 티켓 삭제
+            return null;
+        }
+    }
 }
