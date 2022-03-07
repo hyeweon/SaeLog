@@ -2,12 +2,16 @@ package com.we.saelog;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -16,22 +20,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.Adapter.PostDetailsRecyclerAdapter;
+import com.we.saelog.room.CategoryDAO;
+import com.we.saelog.room.CategoryDB;
+import com.we.saelog.room.MyCategory;
 import com.we.saelog.room.MyPost;
 import com.we.saelog.room.PostDAO;
 import com.we.saelog.room.PostDB;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
-    PostDB db;
+    PostDB postDB;
+    CategoryDB categoryDB;
     PostDetailsRecyclerAdapter mRecyclerAdapter;
 
     private ImageButton mMenu;
     private ImageButton mDownBack;
+    private ImageView mThumbnail;
     private TextView mTitle;
 
     MyPost post;
+    MyCategory category;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -43,9 +54,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
         post = (MyPost) intent.getSerializableExtra("post");
-
-        // DB 호출
-        db = PostDB.getAppDatabase(this);
 
         mMenu = findViewById(R.id.menu);
         mMenu.setOnClickListener(clickListener);
@@ -62,6 +70,29 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+        // DB 호출
+        postDB = PostDB.getAppDatabase(this);
+        categoryDB = CategoryDB.getAppDatabase(this);
+
+        try {
+            category = new CategoryAsyncTask(categoryDB.categoryDAO()).execute(post.getCategory()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Thumbnail
+        mThumbnail = findViewById(R.id.thumbnail);
+        if(category.getType()==5) mThumbnail.setVisibility(View.GONE);
+        String strThumbnail = post.getThumbnail();
+        if(strThumbnail != null && strThumbnail != "") {
+            Bitmap bitmapThumbnail = StringToBitmap(strThumbnail);
+            mThumbnail.setImageBitmap(bitmapThumbnail);
+        } else {
+            mThumbnail.setVisibility(View.GONE);
+        }
+
         // Title
         mTitle = findViewById(R.id.title);
         mTitle.setText(title);
@@ -69,8 +100,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         // Adapter 초기화
         mRecyclerAdapter = new PostDetailsRecyclerAdapter();
 
-        mRecyclerAdapter.setCategoryDB(this);
         mRecyclerAdapter.setPost(post);
+        mRecyclerAdapter.setCategory(category);
+
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -92,7 +124,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
                                     break;
                                 case R.id.btnDelete:
-                                    new PostDetailsActivity.DeleteAsyncTask(db.postDAO()).execute(post.getPostID());
+                                    new PostDetailsActivity.DeleteAsyncTask(postDB.postDAO()).execute(post.getPostID());
                                     onBackPressed();
                                     break;
                                 case R.id.btnSaveImage:
@@ -110,6 +142,37 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         }
     };
+
+    // from https://stickode.com/detail.html?no=1297
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+    // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
+    public static class CategoryAsyncTask extends AsyncTask<Integer, Void, MyCategory> {
+        private final CategoryDAO categoryDAO;
+
+        public  CategoryAsyncTask(CategoryDAO categoryDAO){
+            this.categoryDAO = categoryDAO;
+        }
+
+        @Override
+        protected MyCategory doInBackground(Integer... ID) {
+            List<MyCategory> categoryList = categoryDAO.findByID(ID[0]);
+            try {
+                return categoryList.get(0);
+            } catch (Exception e) {
+                return new MyCategory("","","",0,0);
+            }
+        }
+    }
 
     // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
     public static class DeleteAsyncTask extends AsyncTask<Integer, Void, Void> {

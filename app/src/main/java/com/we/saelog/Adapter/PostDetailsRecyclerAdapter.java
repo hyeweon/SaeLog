@@ -1,7 +1,5 @@
 package com.we.saelog.Adapter;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.R;
-import com.we.saelog.room.CategoryDAO;
-import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
 import com.we.saelog.room.MyPost;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private MyPost post;
     private MyCategory category;
-
-    CategoryDB categoryDB;
 
     @NonNull
     @Override
@@ -72,19 +63,12 @@ public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    public void setCategoryDB(Context context){
-        categoryDB = CategoryDB.getAppDatabase(context);
-    }
-
     public void setPost(MyPost post) {
         this.post = post;
-        try {
-            category = new CategoryAsyncTask(categoryDB.categoryDAO()).execute(post.getCategory()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
+
+    public void setCategory(MyCategory category) {
+        this.category = category;
     }
 
     @Override
@@ -145,25 +129,6 @@ public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         public void onBind(int i) {
             mTitle.setText(category.getContentTitle(i));
             mRatingbar.setRating(Float.valueOf(post.getContent(i)));
-        }
-    }
-
-    // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
-    public static class CategoryAsyncTask extends AsyncTask<Integer, Void, MyCategory> {
-        private final CategoryDAO categoryDAO;
-
-        public  CategoryAsyncTask(CategoryDAO categoryDAO){
-            this.categoryDAO = categoryDAO;
-        }
-
-        @Override
-        protected MyCategory doInBackground(Integer... ID) {
-            List<MyCategory> categoryList = categoryDAO.findByID(ID[0]);
-            try {
-                return categoryList.get(0);
-            } catch (Exception e) {
-                return new MyCategory("","","",0,0);
-            }
         }
     }
 }
