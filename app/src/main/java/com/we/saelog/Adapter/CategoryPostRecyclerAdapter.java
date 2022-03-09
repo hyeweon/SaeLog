@@ -1,5 +1,6 @@
 package com.we.saelog.Adapter;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.we.saelog.PostDetailsActivity;
 import com.we.saelog.R;
 import com.we.saelog.room.MyCategory;
 import com.we.saelog.room.MyPost;
@@ -102,6 +104,9 @@ public class CategoryPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(), "포스트 상세보기를 준비 중이에요", Toast.LENGTH_SHORT).show();
+                    int position = getAdapterPosition();
+                    MyPost item = posts.get(position);
+                    startPostDetailsActivity(v, position, item);
                 }
             });
         }
@@ -131,6 +136,9 @@ public class CategoryPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(), "포스트 상세보기를 준비 중이에요", Toast.LENGTH_SHORT).show();
+                    int position = getAdapterPosition();
+                    MyPost item = posts.get(position);
+                    startPostDetailsActivity(v, position, item);
                 }
             });
         }
@@ -162,6 +170,9 @@ public class CategoryPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(), "포스트 상세보기를 준비 중이에요", Toast.LENGTH_SHORT).show();
+                    int position = getAdapterPosition();
+                    MyPost item = posts.get(position);
+                    startPostDetailsActivity(v, position, item);
                 }
             });
         }
@@ -190,6 +201,9 @@ public class CategoryPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(), "포스트 상세보기를 준비 중이에요", Toast.LENGTH_SHORT).show();
+                    int position = getAdapterPosition();
+                    MyPost item = posts.get(position);
+                    startPostDetailsActivity(v, position, item);
                 }
             });
         }
@@ -203,6 +217,21 @@ public class CategoryPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 Bitmap bitmapThumbnail = StringToBitmap(strThumbnail);
                 mThumbnail.setImageBitmap(bitmapThumbnail);
             }
+        }
+    }
+
+    public void startPostDetailsActivity(View v, int position, MyPost item){
+        Intent intent;
+        if (position != RecyclerView.NO_POSITION) {         // 목록의 포스트를 누를 경우 실행
+            String itemTitle = item.getTitle();             // 포스트의 제목 정보 가져오기
+            int itemID = item.getPostID();                  // 포스트 삭제를 위한 ID 가져오기
+
+            // Intent로 해당 포스트의 정보 교환
+            intent = new Intent(v.getContext(), PostDetailsActivity.class);
+            intent.putExtra("post", item);
+            intent.putExtra("title", itemTitle);
+            intent.putExtra("ID", itemID);
+            v.getContext().startActivity(intent);           // Intent 호출
         }
     }
 
