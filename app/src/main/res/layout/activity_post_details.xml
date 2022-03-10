@@ -10,6 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,18 +48,20 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
-                <ImageView
+                <ImageButton
+                    android:id="@+id/btnHeart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/icon_heart_empty"
+                    android:background="@null"
+                    android:src="@drawable/icon_details_heart_empty"
                     android:scaleType="fitCenter"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:paddingHorizontal="10dp"
                 android:orientation="vertical">
                 <ImageView
@@ -93,8 +96,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"/>
-            </LinearLayout>
+                    android:layout_marginBottom="10dp"/>            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

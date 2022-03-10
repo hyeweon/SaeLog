@@ -1,5 +1,7 @@
 package com.we.saelog.Adapter;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +130,7 @@ public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
         public void onBind(int i) {
             mTitle.setText(category.getContentTitle(i));
+            mRatingbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(category.getTheme())));
             mRatingbar.setRating(Float.valueOf(post.getContent(i)));
         }
     }

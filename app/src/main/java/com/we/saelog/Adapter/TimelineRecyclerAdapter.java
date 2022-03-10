@@ -101,11 +101,11 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
                     boolean itemIsHearted = item.getHearted();
 
                     if(itemIsHearted==true){
-                        btnHeart.setImageResource(R.drawable.icon_heart);
+                        btnHeart.setImageResource(R.drawable.icon_timeline_heart_empty);
                         itemIsHearted = false;
                     }
                     else{
-                        btnHeart.setImageResource(R.drawable.icon_fullheart);
+                        btnHeart.setImageResource(R.drawable.icon_timeline_heart_full);
                         itemIsHearted = true;
                     }
 
@@ -159,10 +159,10 @@ public class TimelineRecyclerAdapter extends RecyclerView.Adapter<TimelineRecycl
             }
 
             if(item.getHearted()==true){
-                btnHeart.setImageResource(R.drawable.icon_fullheart);
+                btnHeart.setImageResource(R.drawable.icon_timeline_heart_full);
             }
             else {
-                btnHeart.setImageResource(R.drawable.icon_heart);
+                btnHeart.setImageResource(R.drawable.icon_timeline_heart_empty);
             }
         }
     }

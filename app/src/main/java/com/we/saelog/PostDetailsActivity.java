@@ -2,8 +2,10 @@ package com.we.saelog;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.we.saelog.Adapter.PostDetailsRecyclerAdapter;
+import com.we.saelog.Adapter.TimelineRecyclerAdapter;
 import com.we.saelog.room.CategoryDAO;
 import com.we.saelog.room.CategoryDB;
 import com.we.saelog.room.MyCategory;
@@ -38,6 +41,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private ImageButton mMenu;
     private ImageButton mDownBack;
+    private ImageButton mBtnHeart;
     private ImageView mThumbnail;
     private TextView mTitle;
 
@@ -81,6 +85,16 @@ public class PostDetailsActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        mBtnHeart = findViewById(R.id.btnHeart);
+        if(post.getHearted()==true){
+            mBtnHeart.setImageResource(R.drawable.icon_details_heart_full);
+        }
+        else {
+            mBtnHeart.setImageResource(R.drawable.icon_details_heart_empty);
+        }
+        mBtnHeart.setImageTintList(ColorStateList.valueOf(Color.parseColor(category.getTheme())));
+        mBtnHeart.setOnClickListener(clickListener);
 
         // Thumbnail
         mThumbnail = findViewById(R.id.thumbnail);
@@ -139,6 +153,21 @@ public class PostDetailsActivity extends AppCompatActivity {
                 case R.id.downBack:
                     onBackPressed();
                     break;
+                case R.id.btnHeart:
+                    boolean itemIsHearted = post.getHearted();
+
+                    if(itemIsHearted==true){
+                        mBtnHeart.setImageResource(R.drawable.icon_details_heart_empty);
+                        itemIsHearted = false;
+                    }
+                    else{
+                        mBtnHeart.setImageResource(R.drawable.icon_details_heart_full);
+                        itemIsHearted = true;
+                    }
+
+                    post.setHearted(itemIsHearted);
+                    // DB에 update
+                    new TimelineRecyclerAdapter.UpdateAsyncTask(postDB.postDAO()).execute(post);
             }
         }
     };
@@ -174,7 +203,20 @@ public class PostDetailsActivity extends AppCompatActivity {
         }
     }
 
-    // Main Thread에서 DB에 접근하는 것을 피하기 위한 AsyncTask 사용
+    public static class UpdateAsyncTask extends AsyncTask<MyPost, Void, Void> {
+        private final PostDAO postDAO;
+
+        public  UpdateAsyncTask(PostDAO postDAO){
+            this.postDAO = postDAO;
+        }
+
+        @Override
+        protected Void doInBackground(MyPost... myPost) {
+            postDAO.update(myPost[0]); // DB에 새로운 포스트 추가
+            return null;
+        }
+    }
+
     public static class DeleteAsyncTask extends AsyncTask<Integer, Void, Void> {
         private PostDAO postDAO;
 
