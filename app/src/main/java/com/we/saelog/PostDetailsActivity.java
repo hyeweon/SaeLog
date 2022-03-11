@@ -135,14 +135,12 @@ public class PostDetailsActivity extends AppCompatActivity {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()){
                                 case R.id.btnUpdate:
-
                                     break;
                                 case R.id.btnDelete:
                                     new PostDetailsActivity.DeleteAsyncTask(postDB.postDAO()).execute(post.getPostID());
                                     onBackPressed();
                                     break;
                                 case R.id.btnSaveImage:
-
                                     break;
                             }
                             return false;
