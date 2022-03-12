@@ -37,4 +37,10 @@
     <style name="ToolbarMenu">
         <item name="android:textSize">19sp</item>
     </style>
+
+    <style name="ratingbar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_stars</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
 </resources>
