@@ -23,5 +23,5 @@
         android:layout_height="wrap_content"
         android:isIndicator="true"
         android:numStars="5"
-        style="@style/ratingbar"/>
+        style="@style/Widget.AppCompat.RatingBar.Indicator"/>
 </LinearLayout>
