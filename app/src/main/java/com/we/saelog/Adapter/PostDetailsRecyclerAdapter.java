@@ -41,8 +41,8 @@ public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 v = inflater.inflate(R.layout.content_detail_ratingbar, parent, false);
                 return new PostDetailsRecyclerAdapter.ratingbarViewholder(v);
             case 5:
-                v = inflater.inflate(R.layout.content_detail_text, parent, false);
-                return new PostDetailsRecyclerAdapter.textViewHolder(v);
+                v = inflater.inflate(R.layout.content_detail_image, parent, false);
+                return new PostDetailsRecyclerAdapter.imageViewholder(v);
             default:
                 v = inflater.inflate(R.layout.content_detail_text, parent, false);
                 return new PostDetailsRecyclerAdapter.textViewHolder(v);
@@ -122,6 +122,24 @@ public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         public RatingBar mRatingbar;
 
         public ratingbarViewholder(@NonNull View itemView) {
+            super(itemView);
+
+            mTitle = itemView.findViewById(R.id.contentTitle);
+            mRatingbar = itemView.findViewById(R.id.ratingbar);
+        }
+
+        public void onBind(int i) {
+            mTitle.setText(category.getContentTitle(i));
+            mRatingbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(category.getTheme())));
+            mRatingbar.setRating(Float.valueOf(post.getContent(i)));
+        }
+    }
+
+    public class imageViewholder extends RecyclerView.ViewHolder {
+        public TextView mTitle;
+        public RatingBar mRatingbar;
+
+        public imageViewholder(@NonNull View itemView) {
             super(itemView);
 
             mTitle = itemView.findViewById(R.id.contentTitle);

@@ -44,8 +44,8 @@ public class NewPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 v = inflater.inflate(R.layout.content_ratingbar, parent, false);
                 return new ratingbarViewholder(v);
             case 5:
-                v = inflater.inflate(R.layout.content_text_short, parent, false);
-                return new textViewHolder(v);
+                v = inflater.inflate(R.layout.content_image, parent, false);
+                return new imageViewholder(v);
             default:
                 v = inflater.inflate(R.layout.content_text_short, parent, false);
                 return new textViewHolder(v);
@@ -161,6 +161,30 @@ public class NewPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public RatingBar mRatingbar;
 
         public ratingbarViewholder(@NonNull View itemView) {
+            super(itemView);
+
+            mTitle = itemView.findViewById(R.id.contentTitle);
+            mRatingbar = itemView.findViewById(R.id.ratingbar);
+            mRatingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                    contents.set(getAdapterPosition(), String.valueOf(v));
+                }
+            });
+        }
+
+        public void onBind(String item) {
+            contents.set(getAdapterPosition(), "0");
+
+            mTitle.setText(item);
+        }
+    }
+
+    public class imageViewholder extends RecyclerView.ViewHolder {
+        public TextView mTitle;
+        public RatingBar mRatingbar;
+
+        public imageViewholder(@NonNull View itemView) {
             super(itemView);
 
             mTitle = itemView.findViewById(R.id.contentTitle);
