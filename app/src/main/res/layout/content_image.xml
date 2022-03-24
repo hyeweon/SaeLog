@@ -30,14 +30,14 @@
             android:textSize="20sp"
             android:text="대표 이미지"/>
         <ImageView
-            android:id="@+id/btnThumbnailAdd"
+            android:id="@+id/btnImageAdd"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/icon_photo"/>
     </LinearLayout>
     <ImageView
-        android:id="@+id/thumbnail"
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

@@ -1,11 +1,15 @@
 package com.we.saelog.Adapter;
 
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -137,19 +141,35 @@ public class PostDetailsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public class imageViewholder extends RecyclerView.ViewHolder {
         public TextView mTitle;
-        public RatingBar mRatingbar;
+        public ImageView mImage;
 
         public imageViewholder(@NonNull View itemView) {
             super(itemView);
 
             mTitle = itemView.findViewById(R.id.contentTitle);
-            mRatingbar = itemView.findViewById(R.id.ratingbar);
+            mImage = itemView.findViewById(R.id.image);
         }
 
         public void onBind(int i) {
             mTitle.setText(category.getContentTitle(i));
-            mRatingbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(category.getTheme())));
-            mRatingbar.setRating(Float.valueOf(post.getContent(i)));
+
+            String strImage = post.getThumbnail();
+            if(strImage != null && strImage != "") {
+                Bitmap bitmapImage = StringToBitmap(strImage);
+                mImage.setImageBitmap(bitmapImage);
+            }
+        }
+    }
+
+    // from https://stickode.com/detail.html?no=1297
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
         }
     }
 }

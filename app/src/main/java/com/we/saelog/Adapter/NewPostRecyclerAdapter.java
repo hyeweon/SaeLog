@@ -1,7 +1,9 @@
 package com.we.saelog.Adapter;
 
+import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.we.saelog.R;
 import com.we.saelog.room.MyCategory;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class NewPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -202,5 +205,13 @@ public class NewPostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             mTitle.setText(item);
         }
+    }
+
+    public static String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] bytes = baos.toByteArray();
+        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return temp;
     }
 }
